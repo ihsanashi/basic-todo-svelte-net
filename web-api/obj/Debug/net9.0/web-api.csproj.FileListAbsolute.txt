@@ -8,7 +8,9 @@
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/web-api.pdb
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Azure.Core.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Azure.Identity.dll
+/Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/DotNetEnv.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Humanizer.dll
+/Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Microsoft.AspNetCore.OpenApi.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Microsoft.AspNetCore.Razor.Language.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Microsoft.Bcl.AsyncInterfaces.dll
@@ -68,6 +70,7 @@
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/NuGet.Protocol.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/NuGet.Versioning.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Pomelo.EntityFrameworkCore.MySql.dll
+/Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Sprache.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Swashbuckle.AspNetCore.Swagger.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerUI.dll
