@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
 using Pomelo.EntityFrameworkCore.MySql;
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,18 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var dbConnectionString = Environment.GetEnvironmentVariable("BASIC_TODO_DB_CONNECTION_STRING=");
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    Env.Load(".env.development");
+}
+else
+{
+    Env.Load(".env.production");
+}
+
+var dbConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 
 builder.Services.AddDbContext<TodoContext>(options =>
     options.UseMySql(
