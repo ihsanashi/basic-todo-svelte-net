@@ -34,7 +34,32 @@ builder.Services.AddDbContext<TodoContext>(options =>
         new MySqlServerVersion(new Version(8, 0, 36))
     ));
 
-var app = builder.Build();
+// JWT setup
+var jwtSecretKey = Environment.GetEnvironmentVariable("JWT_SECRETKEY");
+var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER");
+var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
+
+if (string.IsNullOrEmpty(jwtSecretKey))
+{
+    throw new InvalidOperationException("JWT_SECRETKEY is required but is not set.");
+}
+
+// Add authentication using JWT
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
+            IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(jwtSecretKey))
+        };
+    });
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
