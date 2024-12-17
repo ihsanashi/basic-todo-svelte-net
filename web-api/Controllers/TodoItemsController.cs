@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
@@ -17,6 +18,7 @@ public class TodoItemsController : ControllerBase
 
     // GET: api/TodoItems
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems()
     {
         return await _context.TodoItems
@@ -27,6 +29,7 @@ public class TodoItemsController : ControllerBase
     // GET: api/TodoItems/5
     // <snippet_GetByID>
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<ActionResult<TodoItemDTO>> GetTodoItem(long id)
     {
         var todoItem = await _context.TodoItems.FindAsync(id);
@@ -44,6 +47,7 @@ public class TodoItemsController : ControllerBase
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     // <snippet_Update>
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> PutTodoItem(long id, TodoItemDTO todoDTO)
     {
         if (id != todoDTO.Id)
@@ -77,6 +81,7 @@ public class TodoItemsController : ControllerBase
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     // <snippet_Create>
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<TodoItemDTO>> PostTodoItem(TodoItemDTO todoDTO)
     {
         var todoItem = new TodoItem
@@ -97,6 +102,7 @@ public class TodoItemsController : ControllerBase
 
     // DELETE: api/TodoItems/5
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> DeleteTodoItem(long id)
     {
         var todoItem = await _context.TodoItems.FindAsync(id);
