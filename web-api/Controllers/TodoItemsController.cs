@@ -10,14 +10,10 @@ namespace TodoApi.Controllers;
 [ApiController]
 public class TodoItemsController : ControllerBase
 {
-    // TODO! remove TodoContext after all business
-    // ! logic has been migrated to the TodoService
-    private readonly TodoContext _context;
     private readonly TodoService _todoService;
 
-    public TodoItemsController(TodoContext context, TodoService todoService)
+    public TodoItemsController(TodoService todoService)
     {
-        _context = context;
         _todoService = todoService;
     }
 
@@ -49,14 +45,27 @@ public class TodoItemsController : ControllerBase
     [Authorize]
     public async Task<ActionResult<TodoItemDTO>> GetTodoItem(long id)
     {
-        var todoItem = await _context.TodoItems.FindAsync(id);
-
-        if (todoItem == null)
+        try
         {
-            return NotFound();
-        }
+            var todoItem = await _todoService.GetTodoItemsByIdAsync(id);
 
-        return ItemToDTO(todoItem);
+            if (todoItem == null)
+            {
+                return NotFound(new { message = $"Todo item with ID {id} not found." });
+            }
+
+            return Ok(todoItem);
+        }
+        catch (ApplicationException appException)
+        {
+            Console.Error.WriteLine($"Application error in GetTodoItem: {appException.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = appException.Message });
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Unexpected error in GetTodoItem: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An unexpected error occurred." });
+        }
     }
     // </snippet_GetByID>
 
@@ -67,30 +76,21 @@ public class TodoItemsController : ControllerBase
     [Authorize]
     public async Task<IActionResult> PutTodoItem(long id, TodoItemDTO todoDTO)
     {
-        if (id != todoDTO.Id)
-        {
-            return BadRequest();
-        }
-
-        var todoItem = await _context.TodoItems.FindAsync(id);
-        if (todoItem == null)
-        {
-            return NotFound();
-        }
-
-        todoItem.Name = todoDTO.Name;
-        todoItem.IsComplete = todoDTO.IsComplete;
-
         try
         {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException) when (!TodoItemExists(id))
-        {
-            return NotFound();
-        }
+            var updatedItem = await _todoService.UpdateTodoItemAsync(id, todoDTO);
+            if (updatedItem == null)
+            {
+                return NotFound(new { message = $"Todo item with ID {id} not found." });
+            }
 
-        return NoContent();
+            return Ok(updatedItem);
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Error updating todo item with ID {id}", ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = $"An error occurred while updating the todo item with ID {id}" });
+        }
     }
     // </snippet_Update>
 
@@ -101,19 +101,16 @@ public class TodoItemsController : ControllerBase
     [Authorize]
     public async Task<ActionResult<TodoItemDTO>> PostTodoItem(TodoItemDTO todoDTO)
     {
-        var todoItem = new TodoItem
+        try
         {
-            IsComplete = todoDTO.IsComplete,
-            Name = todoDTO.Name
-        };
-
-        _context.TodoItems.Add(todoItem);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction(
-            nameof(GetTodoItem),
-            new { id = todoItem.Id },
-            ItemToDTO(todoItem));
+            var createdItem = await _todoService.CreateTodoItemsAsync(todoDTO);
+            return CreatedAtAction(nameof(GetTodoItem), createdItem);
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Error creating todo item: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while creating a todo item." });
+        }
     }
     // </snippet_Create>
 
@@ -122,21 +119,21 @@ public class TodoItemsController : ControllerBase
     [Authorize]
     public async Task<IActionResult> DeleteTodoItem(long id)
     {
-        var todoItem = await _context.TodoItems.FindAsync(id);
-        if (todoItem == null)
+        try
         {
-            return NotFound();
+            var result = await _todoService.DeleteTodoItemsAsync(id);
+            if (!result)
+            {
+                return NotFound(new { message = $"Todo item with ID {id} not found." });
+            }
+
+            return NoContent();
         }
-
-        _context.TodoItems.Remove(todoItem);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
-    }
-
-    private bool TodoItemExists(long id)
-    {
-        return _context.TodoItems.Any(e => e.Id == id);
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Error deleting todo item with ID {id}.", ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = $"An error occurred while deleting the todo item with ID {id}" });
+        }
     }
 
     private static TodoItemDTO ItemToDTO(TodoItem todoItem) =>
