@@ -5,6 +5,7 @@
   - [ ] Secure Swagger UI endpoints
 - [ ] [**Backend: Core**]: Modify todo items controller
   - [ ] Ensure row level security is adhered to
+  - [ ] Move business logic to a service file
 - [ ] [**Frontend**]: Configure tooling
   - [ ] Tailwind
   - [ ] Eslint

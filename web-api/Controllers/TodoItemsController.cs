@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
+using TodoApi.Services;
 
 namespace TodoApi.Controllers;
 
@@ -9,11 +10,15 @@ namespace TodoApi.Controllers;
 [ApiController]
 public class TodoItemsController : ControllerBase
 {
+    // TODO! remove TodoContext after all business
+    // ! logic has been migrated to the TodoService
     private readonly TodoContext _context;
+    private readonly TodoService _todoService;
 
-    public TodoItemsController(TodoContext context)
+    public TodoItemsController(TodoContext context, TodoService todoService)
     {
         _context = context;
+        _todoService = todoService;
     }
 
     // GET: api/TodoItems
@@ -21,9 +26,21 @@ public class TodoItemsController : ControllerBase
     [Authorize]
     public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems()
     {
-        return await _context.TodoItems
-            .Select(x => ItemToDTO(x))
-            .ToListAsync();
+        try
+        {
+            var todoItems = await _todoService.GetAllTodoItemsAsync();
+            return Ok(todoItems);
+        }
+        catch (ApplicationException exception)
+        {
+            Console.Error.WriteLine($"Error in GetTodoItems: {exception.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = exception.Message });
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Unexpected error: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An unexpected error occurred." });
+        }
     }
 
     // GET: api/TodoItems/5

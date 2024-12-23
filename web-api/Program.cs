@@ -1,6 +1,7 @@
 using DotNetEnv;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using TodoApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,8 @@ builder.Services.AddOpenApi();
 // Add Swagger services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<TodoService>();
 
 var dbConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 
