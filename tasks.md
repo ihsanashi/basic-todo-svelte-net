@@ -10,7 +10,7 @@
   - [x] Tailwind
   - [x] Eslint
   - [x] Prettier
-- [ ] [**Frontend**]: Implement authentication UI pages
+- [ ] [**Frontend**]: Implement authentication UI pages with Lucia library
   - [ ] Register
   - [ ] Login
   - [ ] Forget password
