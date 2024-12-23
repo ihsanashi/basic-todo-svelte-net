@@ -1,6 +1,8 @@
 using DotNetEnv;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using TodoApi.Models;
 using TodoApi.Services;
 
@@ -23,7 +25,35 @@ builder.Services.AddOpenApi();
 
 // Add Swagger services
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(option =>
+{
+    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Basic Todo Web API", Version = "v1" });
+
+    var jwtSecuritySchema = new OpenApiSecurityScheme
+    {
+        BearerFormat = "JWT",
+        Name = "JWT Authentication",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+        Description = "Put **_ONLY_** your JWT Bearer token in the input below!",
+
+        Reference = new OpenApiReference
+        {
+            Id = JwtBearerDefaults.AuthenticationScheme,
+            Type = ReferenceType.SecurityScheme,
+        }
+    };
+
+    option.AddSecurityDefinition(jwtSecuritySchema.Reference.Id, jwtSecuritySchema);
+
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            jwtSecuritySchema, Array.Empty<string>()
+        }
+    });
+});
 
 builder.Services.AddScoped<TodoService>();
 
@@ -48,8 +78,9 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.MapSwagger().RequireAuthorization();
 }
+
+app.MapSwagger().RequireAuthorization();
 
 app.UseHttpsRedirection();
 

@@ -1,8 +1,8 @@
 ## Tasks
 
-- [ ] [**Backend: Auth**]: Configure authentication endpoints and protect API routes
+- [x] [**Backend: Auth**]: Configure authentication endpoints and protect API routes
   - [x] Setup with Identity and Pomelo MySql package
-  - [ ] Secure Swagger UI endpoints
+  - [x] Secure Swagger UI endpoints
 - [ ] [**Backend: Core**]: Modify todo items controller
   - [x] Ensure row level security is adhered to
   - [x] Move business logic to a service file
