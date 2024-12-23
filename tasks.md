@@ -6,10 +6,10 @@
 - [x] [**Backend: Core**]: Modify todo items controller
   - [x] Ensure row level security is adhered to
   - [x] Move business logic to a service file
-- [ ] [**Frontend**]: Configure tooling
-  - [ ] Tailwind
-  - [ ] Eslint
-  - [ ] Prettier
+- [x] [**Frontend**]: Configure tooling
+  - [x] Tailwind
+  - [x] Eslint
+  - [x] Prettier
 - [ ] [**Frontend**]: Implement authentication UI pages
   - [ ] Register
   - [ ] Login
