@@ -3,7 +3,7 @@
 - [x] [**Backend: Auth**]: Configure authentication endpoints and protect API routes
   - [x] Setup with Identity and Pomelo MySql package
   - [x] Secure Swagger UI endpoints
-- [ ] [**Backend: Core**]: Modify todo items controller
+- [x] [**Backend: Core**]: Modify todo items controller
   - [x] Ensure row level security is adhered to
   - [x] Move business logic to a service file
 - [ ] [**Frontend**]: Configure tooling
@@ -15,6 +15,7 @@
   - [ ] Login
   - [ ] Forget password
 - [ ] [**Frontend**]: Implement home page
+  - [ ] List of a user's todos
   - [ ] Create todos
     - [ ] (If time allows) Unit tests
 - [ ] [**Frontend**]: Implement todo details page
