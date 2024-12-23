@@ -1,6 +1,6 @@
 using DotNetEnv;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using TodoApi.Models;
@@ -23,36 +23,45 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+const string authCookieName = "BasicTodo.API-Auth";
+
 // Add Swagger services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "Basic Todo Web API", Version = "v1" });
 
-    var jwtSecuritySchema = new OpenApiSecurityScheme
+    var cookieSecuritySchema = new OpenApiSecurityScheme
     {
-        BearerFormat = "JWT",
-        Name = "JWT Authentication",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Scheme = JwtBearerDefaults.AuthenticationScheme,
-        Description = "Put **_ONLY_** your JWT Bearer token in the input below!",
+        Type = SecuritySchemeType.ApiKey,
+        In = ParameterLocation.Cookie,
+        Name = authCookieName,
+        Description = "We use cookies for authentication.",
 
         Reference = new OpenApiReference
         {
-            Id = JwtBearerDefaults.AuthenticationScheme,
+            Id = "Cookie Authentication",
             Type = ReferenceType.SecurityScheme,
         }
     };
 
-    option.AddSecurityDefinition(jwtSecuritySchema.Reference.Id, jwtSecuritySchema);
+    option.AddSecurityDefinition(cookieSecuritySchema.Reference.Id, cookieSecuritySchema);
 
     option.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
-            jwtSecuritySchema, Array.Empty<string>()
+            cookieSecuritySchema, Array.Empty<string>()
         }
     });
+});
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.Name = authCookieName;
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.Strict;
+    options.ExpireTimeSpan = TimeSpan.FromDays(7);
 });
 
 builder.Services.AddScoped<TodoService>();

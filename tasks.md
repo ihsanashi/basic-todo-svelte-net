@@ -10,10 +10,14 @@
   - [x] Tailwind
   - [x] Eslint
   - [x] Prettier
-- [ ] [**Frontend**]: Implement authentication UI pages with Lucia library
-  - [ ] Register
-  - [ ] Login
-  - [ ] Forget password
+- [ ] [**Full-stack: Core**]: Authentication integration
+  - [x] Backend (Swagger): Authorize endpoints with cookie instead of token
+    - [x] Fix cookie name not updating to custom value
+  - [x] Backend: issue auth token in a http cookie
+  - [ ] Frontend UI
+    - [ ] Register
+    - [ ] Login
+    - [ ] Forget password
 - [ ] [**Frontend**]: Implement home page
   - [ ] List of a user's todos
   - [ ] Create todos
