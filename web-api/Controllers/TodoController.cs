@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +25,14 @@ public class TodoItemsController : ControllerBase
     {
         try
         {
-            var todoItems = await _todoService.GetAllTodoItemsAsync();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new { message = "User is not authorized." });
+            }
+
+            var todoItems = await _todoService.GetTodoItemsByUserAsync(userId);
             return Ok(todoItems);
         }
         catch (ApplicationException exception)
@@ -47,7 +55,14 @@ public class TodoItemsController : ControllerBase
     {
         try
         {
-            var todoItem = await _todoService.GetTodoItemsByIdAsync(id);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new { message = "User is not authorized" });
+            }
+
+            var todoItem = await _todoService.GetTodoItemByIdAsync(id, userId);
 
             if (todoItem == null)
             {
@@ -78,7 +93,15 @@ public class TodoItemsController : ControllerBase
     {
         try
         {
-            var updatedItem = await _todoService.UpdateTodoItemAsync(id, todoDTO);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new { message = "User is not authorized" });
+            }
+
+            var updatedItem = await _todoService.UpdateTodoItemAsync(id, todoDTO, userId);
+
             if (updatedItem == null)
             {
                 return NotFound(new { message = $"Todo item with ID {id} not found." });
@@ -101,9 +124,16 @@ public class TodoItemsController : ControllerBase
     [Authorize]
     public async Task<ActionResult<TodoItemDTO>> PostTodoItem(TodoItemDTO todoDTO)
     {
+        var userId = User.FindFirst("sub")?.Value;
+
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized();
+        }
+
         try
         {
-            var createdItem = await _todoService.CreateTodoItemsAsync(todoDTO);
+            var createdItem = await _todoService.CreateTodoItemsAsync(todoDTO, userId);
             return CreatedAtAction(nameof(GetTodoItem), createdItem);
         }
         catch (Exception ex)
@@ -121,7 +151,14 @@ public class TodoItemsController : ControllerBase
     {
         try
         {
-            var result = await _todoService.DeleteTodoItemsAsync(id);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new { message = "User is not authorized" });
+            }
+
+            var result = await _todoService.DeleteTodoItemsAsync(id, userId);
             if (!result)
             {
                 return NotFound(new { message = $"Todo item with ID {id} not found." });

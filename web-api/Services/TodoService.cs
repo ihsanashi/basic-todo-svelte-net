@@ -14,24 +14,29 @@ public class TodoService
     _context = context;
   }
 
-  public async Task<IEnumerable<TodoItemDTO>> GetAllTodoItemsAsync()
+  public async Task<IEnumerable<TodoItemDTO>> GetTodoItemsByUserAsync(string userId)
   {
     try
     {
-      return await _context.TodoItems.Select(x => ItemToDTO(x)).ToListAsync();
+      return await _context.TodoItems.Where(x => x.UserId == userId).Select(x => new TodoItemDTO
+      {
+        Id = x.Id,
+        Name = x.Name,
+        IsComplete = x.IsComplete,
+      }).ToListAsync();
     }
     catch (Exception exception)
     {
-      Console.Error.WriteLine($"Error fetching todo items: {exception.Message}");
-      throw new ApplicationException("Unable to retrieve todo items", exception);
+      Console.Error.WriteLine($"Error fetching todo items for userId {userId}: {exception.Message}");
+      throw new ApplicationException("Unable to retrieve todo items for userId {userId}", exception);
     }
   }
 
-  public async Task<TodoItemDTO?> GetTodoItemsByIdAsync(long id)
+  public async Task<TodoItemDTO?> GetTodoItemByIdAsync(long id, string userId)
   {
     try
     {
-      var todoItem = await _context.TodoItems.FindAsync(id);
+      var todoItem = await _context.TodoItems.Where(t => t.Id == id && t.UserId == userId).FirstOrDefaultAsync();
 
       if (todoItem == null)
       {
@@ -47,14 +52,15 @@ public class TodoService
     }
   }
 
-  public async Task<TodoItemDTO?> UpdateTodoItemAsync(long id, TodoItemDTO todoItemDTO)
+  public async Task<TodoItemDTO?> UpdateTodoItemAsync(long id, TodoItemDTO todoItemDTO, string userId)
   {
     if (id != todoItemDTO.Id)
     {
       return null;
     }
 
-    var todoItem = await _context.TodoItems.FindAsync(id);
+    var todoItem = await _context.TodoItems.Where(t => t.Id == id && t.UserId == userId).FirstOrDefaultAsync();
+
     if (todoItem == null)
     {
       return null;
@@ -83,12 +89,13 @@ public class TodoService
     }
   }
 
-  public async Task<TodoItemDTO> CreateTodoItemsAsync(TodoItemDTO todoItemDTO)
+  public async Task<TodoItemDTO> CreateTodoItemsAsync(TodoItemDTO todoItemDTO, string userId)
   {
     var todoItem = new TodoItem
     {
       IsComplete = todoItemDTO.IsComplete,
       Name = todoItemDTO.Name,
+      UserId = userId,
     };
 
     _context.TodoItems.Add(todoItem);
@@ -102,9 +109,10 @@ public class TodoService
     };
   }
 
-  public async Task<bool> DeleteTodoItemsAsync(long id)
+  public async Task<bool> DeleteTodoItemsAsync(long id, string userId)
   {
-    var todoItem = await _context.TodoItems.FindAsync(id);
+    var todoItem = await _context.TodoItems.Where(t => t.Id == id && t.UserId == userId).FirstOrDefaultAsync();
+
     if (todoItem == null)
     {
       return false;

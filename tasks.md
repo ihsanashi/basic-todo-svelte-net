@@ -4,7 +4,7 @@
   - [x] Setup with Identity and Pomelo MySql package
   - [ ] Secure Swagger UI endpoints
 - [ ] [**Backend: Core**]: Modify todo items controller
-  - [ ] Ensure row level security is adhered to
+  - [x] Ensure row level security is adhered to
   - [x] Move business logic to a service file
 - [ ] [**Frontend**]: Configure tooling
   - [ ] Tailwind
