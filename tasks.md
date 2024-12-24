@@ -14,6 +14,8 @@
   - [x] Backend (Swagger): Authorize endpoints with cookie instead of token
     - [x] Fix cookie name not updating to custom value
   - [x] Backend: issue auth token in a http cookie
+  - [x] Backend: Implement logout endpoint
+  - [ ] Backend: Email service for account confirmation and password reset
   - [ ] Frontend UI
     - [ ] Register
     - [ ] Login
