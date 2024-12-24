@@ -1,10 +1,9 @@
 using DotNetEnv;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using TodoApi.Models;
 using TodoApi.Services;
+using TodoApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,42 +26,8 @@ const string authCookieName = "BasicTodo.API-Auth";
 
 // Add Swagger services
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(option =>
-{
-    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Basic Todo Web API", Version = "v1" });
-
-    var cookieSecuritySchema = new OpenApiSecurityScheme
-    {
-        Type = SecuritySchemeType.ApiKey,
-        In = ParameterLocation.Cookie,
-        Name = authCookieName,
-        Description = "We use cookies for authentication.",
-
-        Reference = new OpenApiReference
-        {
-            Id = "Cookie Authentication",
-            Type = ReferenceType.SecurityScheme,
-        }
-    };
-
-    option.AddSecurityDefinition(cookieSecuritySchema.Reference.Id, cookieSecuritySchema);
-
-    option.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            cookieSecuritySchema, Array.Empty<string>()
-        }
-    });
-});
-
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.Cookie.Name = authCookieName;
-    options.Cookie.HttpOnly = true;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-    options.Cookie.SameSite = SameSiteMode.Strict;
-    options.ExpireTimeSpan = TimeSpan.FromDays(7);
-});
+builder.Services.AddCustomSwagger(authCookieName);
+builder.Services.ConfigureAuthCookies(authCookieName);
 
 builder.Services.AddScoped<TodoService>();
 
@@ -80,6 +45,7 @@ builder.Services.AddDbContext<TodoContext>(dbContextOptions => dbContextOptions.
 var app = builder.Build();
 
 app.MapIdentityApi<IdentityUser>();
+app.MapLogoutEndpoint();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
