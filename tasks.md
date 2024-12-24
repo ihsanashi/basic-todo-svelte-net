@@ -19,6 +19,7 @@
   - [ ] Frontend UI
     - [ ] Register
     - [ ] Login
+    - [ ] Logout
     - [ ] Forget password
 - [ ] [**Frontend**]: Implement home page
   - [ ] List of a user's todos
