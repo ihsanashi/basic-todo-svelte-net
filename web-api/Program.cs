@@ -45,8 +45,9 @@ builder.Services.AddDbContext<TodoContext>(dbContextOptions => dbContextOptions.
 
 var app = builder.Build();
 
-app.MapIdentityApi<IdentityUser>();
-app.MapLogoutEndpoint();
+app.MapGroup("/api/auth")
+.MapIdentityApi<IdentityUser>()
+.WithTags("Authentication");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
