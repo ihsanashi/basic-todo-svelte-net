@@ -1,25 +1,25 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 
 namespace TodoApi.Extensions
 {
   public static class IdentityExtension
   {
-    public static IEndpointRouteBuilder MapLogoutEndpoint(this IEndpointRouteBuilder endpoints)
+    public static async Task<(bool success, string? ErrorMessage)> PerformLogoutAsync(SignInManager<IdentityUser> signInManager, object? requestBody)
     {
-      endpoints.MapPost("/logout", async (SignInManager<IdentityUser> signInManager, [FromBody] object empty) =>
+      if (requestBody == null)
       {
-        if (empty != null)
-        {
-          await signInManager.SignOutAsync();
-          return Results.NoContent();
-        }
-        return Results.Unauthorized();
-      })
-      .WithOpenApi()
-      .RequireAuthorization();
+        return (false, "Invalid request body.");
+      }
 
-      return endpoints;
+      try
+      {
+        await signInManager.SignOutAsync();
+        return (true, null);
+      }
+      catch (Exception ex)
+      {
+        return (false, $"An error occurred during logout: {ex.Message}");
+      }
     }
   }
 }
