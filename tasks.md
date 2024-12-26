@@ -18,9 +18,11 @@
   - [ ] Backend: Email service (with MailKit package) for account confirmation and password reset (postponed)
   - [ ] Frontend UI
     - [ ] Register
+      - [ ] Password and confirm password validation
     - [ ] Login
     - [ ] Logout
     - [ ] Forgot password
+    - [ ] Form validation
 - [ ] [**Frontend**]: Implement home page
   - [ ] List of a user's todos
   - [ ] Create todos
