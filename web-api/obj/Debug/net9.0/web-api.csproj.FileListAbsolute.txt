@@ -1,3 +1,11 @@
+/Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/web-api.csproj.AssemblyReference.cache
+/Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/web-api.GeneratedMSBuildEditorConfig.editorconfig
+/Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/web-api.AssemblyInfoInputs.cache
+/Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/web-api.AssemblyInfo.cs
+/Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/web-api.csproj.CoreCompileInputs.cache
+/Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/web-api.MvcApplicationPartsAssemblyInfo.cs
+/Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/web-api.MvcApplicationPartsAssemblyInfo.cache
+/Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/web-api.sourcelink.json
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/appsettings.Development.json
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/appsettings.json
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/web-api.staticwebassets.endpoints.json
@@ -8,8 +16,10 @@
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/web-api.pdb
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Azure.Core.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Azure.Identity.dll
+/Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/BouncyCastle.Cryptography.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/DotNetEnv.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Humanizer.dll
+/Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/MailKit.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Microsoft.AspNetCore.OpenApi.dll
@@ -58,6 +68,7 @@
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
+/Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/MimeKit.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Mono.TextTemplating.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/MySqlConnector.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/Newtonsoft.Json.dll
@@ -248,14 +259,6 @@
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/runtimes/win-x86/native/Microsoft.Data.SqlClient.SNI.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/runtimes/win/lib/net8.0/System.Diagnostics.EventLog.Messages.dll
 /Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/runtimes/win/lib/net6.0/System.Runtime.Caching.dll
-/Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/web-api.csproj.AssemblyReference.cache
-/Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/web-api.GeneratedMSBuildEditorConfig.editorconfig
-/Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/web-api.AssemblyInfoInputs.cache
-/Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/web-api.AssemblyInfo.cs
-/Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/web-api.csproj.CoreCompileInputs.cache
-/Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/web-api.MvcApplicationPartsAssemblyInfo.cs
-/Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/web-api.MvcApplicationPartsAssemblyInfo.cache
-/Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/web-api.sourcelink.json
 /Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/scopedcss/bundle/web-api.styles.css
 /Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/staticwebassets.build.json
 /Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/staticwebassets.development.json
@@ -272,6 +275,3 @@
 /Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/web-api.pdb
 /Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/web-api.genruntimeconfig.cache
 /Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/ref/web-api.dll
-/Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/BouncyCastle.Cryptography.dll
-/Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/MailKit.dll
-/Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/MimeKit.dll
