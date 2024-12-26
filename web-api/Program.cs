@@ -16,6 +16,23 @@ else
 {
     Env.Load(".env");
 }
+
+// CORS policy configuration
+var corsPolicyName = "basic-todo-webapp";
+var allowedOrigin = Environment.GetEnvironmentVariable("CLIENT_URL") ?? "http://localhost:5173";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        name: corsPolicyName,
+        configurePolicy: policy =>
+    {
+        policy.WithOrigins(allowedOrigin)
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -63,6 +80,8 @@ if (app.Environment.IsDevelopment())
 app.MapSwagger().RequireAuthorization();
 
 app.UseHttpsRedirection();
+
+app.UseCors(corsPolicyName);
 
 app.UseAuthorization();
 
