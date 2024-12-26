@@ -15,12 +15,12 @@
     - [x] Fix cookie name not updating to custom value
   - [x] Backend: issue auth token in a http cookie
   - [x] Backend: Implement logout endpoint
-  - [ ] Backend: Email service (with MailKit package) for account confirmation and password reset
+  - [ ] Backend: Email service (with MailKit package) for account confirmation and password reset (postponed)
   - [ ] Frontend UI
     - [ ] Register
     - [ ] Login
     - [ ] Logout
-    - [ ] Forget password
+    - [ ] Forgot password
 - [ ] [**Frontend**]: Implement home page
   - [ ] List of a user's todos
   - [ ] Create todos
