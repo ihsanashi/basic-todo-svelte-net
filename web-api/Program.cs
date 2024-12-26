@@ -39,7 +39,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(dbContextOptions => dbContex
 
 builder.Services.AddIdentityApiEndpoints<IdentityUser>(options =>
 {
-    options.SignIn.RequireConfirmedEmail = true;
+    options.SignIn.RequireConfirmedEmail = false;
+    options.User.RequireUniqueEmail = true;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
