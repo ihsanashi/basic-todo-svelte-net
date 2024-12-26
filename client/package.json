@@ -4,7 +4,7 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"codegen": "npx @hey-api/openapi-ts -i ../web/references/swagger.json -o references/codegen -c @hey-api/client-fetch",
+		"codegen": "npx @hey-api/openapi-ts -i ../web/references/swagger.json -o src/references/codegen -c @hey-api/client-fetch",
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
