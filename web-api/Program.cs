@@ -38,7 +38,9 @@ var serverVersion = new MySqlServerVersion(new Version(8, 0, 29));
 builder.Services.AddDbContext<ApplicationDbContext>(dbContextOptions => dbContextOptions.UseMySql(dbConnectionString, serverVersion));
 
 builder.Services.AddIdentityApiEndpoints<IdentityUser>(options =>
-options.SignIn.RequireConfirmedEmail = true)
+{
+    options.SignIn.RequireConfirmedEmail = true;
+})
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddDbContext<TodoContext>(dbContextOptions => dbContextOptions.UseMySql(dbConnectionString, serverVersion));

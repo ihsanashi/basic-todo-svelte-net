@@ -272,3 +272,6 @@
 /Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/web-api.pdb
 /Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/web-api.genruntimeconfig.cache
 /Users/ihsanashi/Documents/development/basic-todo/web-api/obj/Debug/net9.0/ref/web-api.dll
+/Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/BouncyCastle.Cryptography.dll
+/Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/MailKit.dll
+/Users/ihsanashi/Documents/development/basic-todo/web-api/bin/Debug/net9.0/MimeKit.dll
