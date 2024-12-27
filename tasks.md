@@ -19,11 +19,13 @@
   - [ ] Frontend UI
     - [ ] Register
       - [ ] Password and confirm password validation
-    - [ ] Login
+    - [x] Login
     - [ ] Logout
     - [ ] Forgot password
     - [ ] Form validation
     - [x] Loading state
+    - [x] Prevent logged in users from accessing auth page
+    - [ ] Beautify module import path
 - [ ] [**Frontend**]: Implement home page
   - [ ] List of a user's todos
   - [ ] Create todos
