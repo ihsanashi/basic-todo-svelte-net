@@ -4,7 +4,7 @@ import type {
 	PostApiAuthLoginResponse,
 	PostApiAuthRegisterResponse,
 	UserDto,
-} from '../codegen';
+} from '@references/codegen';
 
 export interface AuthStore {
 	isAuthenticated: boolean;
