@@ -27,6 +27,6 @@
 	});
 </script>
 
-<Toaster />
+<Toaster closeButton expand position="bottom-right" />
 
 <slot />
