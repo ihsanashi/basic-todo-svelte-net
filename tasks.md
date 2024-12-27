@@ -10,31 +10,34 @@
   - [x] Tailwind
   - [x] Eslint
   - [x] Prettier
-- [ ] [**Full-stack: Core**]: Authentication integration
+- [x] [**Full-stack: Core**]: Authentication integration
   - [x] Backend (Swagger): Authorize endpoints with cookie instead of token
     - [x] Fix cookie name not updating to custom value
   - [x] Backend: issue auth token in a http cookie
   - [x] Backend: Implement logout endpoint
-  - [ ] Backend: Email service (with MailKit package) for account confirmation and password reset (postponed)
-  - [ ] Frontend UI
-    - [ ] Register
-      - [ ] Password and confirm password validation
+  - [x] Frontend UI
+    - [x] Register
     - [x] Login
-    - [ ] Logout
-    - [ ] Forgot password
-    - [ ] Form validation
+    - [x] Logout
+    - [x] Form validation
     - [x] Loading state
     - [x] Prevent logged in users from accessing auth page
-    - [ ] Beautify module import path
-- [ ] [**Frontend**]: Implement home page
-  - [ ] List of a user's todos
-  - [ ] Create todos
-    - [ ] (If time allows) Unit tests
-- [ ] [**Frontend**]: Implement todo details page
-  - [ ] Update a todo
-    - [ ] (If time allows) Unit tests
-  - [ ] Delete a todo
-    - [ ] (If time allows) Unit tests
+    - [x] Beautify module import path
+- [ ] [**Full-stack**]: Todos
+  - [x] Data modelling
+  - [ ] Pagination
+  - [ ] Filtering?
+  - [ ] Homepage UI
+    - [ ] List of a user's todos
+    - [ ] Create todos
+  - [ ] (If time allows) Unit tests
+  - [ ] Implement todo details page UI
+    - [ ] Update a todo
+    - [ ] Delete a todo
+- [ ] [Nice to haves]
+  - [ ] Frontend: Validate on input change
+  - [ ] Backend: Email service (with MailKit package) for account confirmation and password reset
+  - [ ] Frontend: Forgot password (dependent on email service implementation from above)
 - [ ] [**DevOps**]: Handle deployment
   - [ ] For frontend
   - [ ] For backend
