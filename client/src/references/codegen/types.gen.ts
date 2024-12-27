@@ -11,6 +11,12 @@ export type ForgotPasswordRequest = {
     email: (string) | null;
 };
 
+export type GetTodoItemsResponse = {
+    success?: boolean;
+    errorMessage?: (string) | null;
+    data?: Array<TodoItemDTO> | null;
+};
+
 export type HttpValidationProblemDetails = {
     type?: (string) | null;
     title?: (string) | null;
@@ -62,8 +68,12 @@ export type ResetPasswordRequest = {
 
 export type TodoItemDTO = {
     id?: number;
-    name?: (string) | null;
+    title: (string) | null;
     isComplete?: boolean;
+    description?: (string) | null;
+    dueDate?: (string) | null;
+    createdAt?: string;
+    updatedAt?: string;
 };
 
 export type TwoFactorRequest = {
@@ -84,7 +94,7 @@ export type TwoFactorResponse = {
 
 export type UserDto = {
     id: (string) | null;
-    email: (string) | null;
+    email?: (string) | null;
     emailConfirmed: boolean;
     phoneNumber?: (string) | null;
     phoneNumberConfirmed: boolean;
@@ -186,7 +196,7 @@ export type GetApiAuthMeResponse = (UserDto);
 
 export type GetApiAuthMeError = (unknown);
 
-export type GetApiTodoItemsResponse = (Array<TodoItemDTO>);
+export type GetApiTodoItemsResponse = (GetTodoItemsResponse);
 
 export type GetApiTodoItemsError = unknown;
 
