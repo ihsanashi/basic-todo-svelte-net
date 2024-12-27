@@ -222,6 +222,41 @@ paths:
       responses:
         '200':
           description: OK
+  /api/auth/me:
+    get:
+      tags:
+        - Authentication
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema: { }
+            application/json:
+              schema: { }
+            text/json:
+              schema: { }
+        '500':
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema: { }
+            application/json:
+              schema: { }
+            text/json:
+              schema: { }
   /api/TodoItems:
     get:
       tags:
@@ -534,6 +569,27 @@ components:
         isTwoFactorEnabled:
           type: boolean
         isMachineRemembered:
+          type: boolean
+      additionalProperties: false
+    UserDto:
+      required:
+        - emailConfirmed
+        - id
+        - phoneNumberConfirmed
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        emailConfirmed:
+          type: boolean
+        phoneNumber:
+          type: string
+          nullable: true
+        phoneNumberConfirmed:
           type: boolean
       additionalProperties: false
   securitySchemes:
