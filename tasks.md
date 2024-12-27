@@ -23,6 +23,7 @@
     - [ ] Logout
     - [ ] Forgot password
     - [ ] Form validation
+    - [x] Loading state
 - [ ] [**Frontend**]: Implement home page
   - [ ] List of a user's todos
   - [ ] Create todos
