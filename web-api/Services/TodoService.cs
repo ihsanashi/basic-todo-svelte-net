@@ -14,21 +14,35 @@ public class TodoService
     _context = context;
   }
 
-  public async Task<IEnumerable<TodoItemDTO>> GetTodoItemsByUserAsync(string userId)
+  public async Task<GetTodoItemsResponse> GetTodoItemsByUserAsync(string userId)
   {
     try
     {
-      return await _context.TodoItems.Where(x => x.UserId == userId).Select(x => new TodoItemDTO
+      var items = await _context.TodoItems.Where(x => x.UserId == userId).Select(x => new TodoItemDTO
       {
         Id = x.Id,
-        Name = x.Name,
+        Title = x.Title,
         IsComplete = x.IsComplete,
+        Description = x.Description,
+        DueDate = x.DueDate,
+        CreatedAt = x.CreatedAt,
+        UpdatedAt = x.UpdatedAt,
       }).ToListAsync();
+
+      return new GetTodoItemsResponse
+      {
+        Success = true,
+        Data = items
+      };
     }
     catch (Exception exception)
     {
       Console.Error.WriteLine($"Error fetching todo items for userId {userId}: {exception.Message}");
-      throw new ApplicationException("Unable to retrieve todo items for userId {userId}", exception);
+      return new GetTodoItemsResponse
+      {
+        Success = false,
+        ErrorMessage = $"Unable to retrieve todo items for userId {userId}. {exception}",
+      };
     }
   }
 
@@ -66,8 +80,11 @@ public class TodoService
       return null;
     }
 
-    todoItem.Name = todoItemDTO.Name;
+    todoItem.Title = todoItemDTO.Title;
     todoItem.IsComplete = todoItemDTO.IsComplete;
+    todoItem.Description = todoItemDTO.Description;
+    todoItem.DueDate = todoItemDTO.DueDate;
+    todoItem.UpdatedAt = DateTime.UtcNow;
 
     try
     {
@@ -75,8 +92,12 @@ public class TodoService
       return new TodoItemDTO
       {
         Id = todoItemDTO.Id,
-        Name = todoItemDTO.Name,
+        Title = todoItemDTO.Title,
         IsComplete = todoItemDTO.IsComplete,
+        Description = todoItemDTO.Description,
+        DueDate = todoItemDTO.DueDate,
+        CreatedAt = todoItemDTO.CreatedAt,
+        UpdatedAt = todoItemDTO.UpdatedAt
       };
     }
     catch (DbUpdateConcurrencyException)
@@ -93,8 +114,12 @@ public class TodoService
   {
     var todoItem = new TodoItem
     {
+      Title = todoItemDTO.Title,
       IsComplete = todoItemDTO.IsComplete,
-      Name = todoItemDTO.Name,
+      Description = todoItemDTO.Description,
+      DueDate = todoItemDTO.DueDate,
+      CreatedAt = DateTime.UtcNow,
+      UpdatedAt = DateTime.UtcNow,
       UserId = userId,
     };
 
@@ -104,8 +129,12 @@ public class TodoService
     return new TodoItemDTO
     {
       Id = todoItem.Id,
-      Name = todoItem.Name,
+      Title = todoItem.Title,
       IsComplete = todoItem.IsComplete,
+      Description = todoItem.Description,
+      DueDate = todoItem.DueDate,
+      CreatedAt = todoItem.CreatedAt,
+      UpdatedAt = todoItem.UpdatedAt,
     };
   }
 
@@ -127,8 +156,12 @@ public class TodoService
      new TodoItemDTO
      {
        Id = todoItem.Id,
-       Name = todoItem.Name,
-       IsComplete = todoItem.IsComplete
+       Title = todoItem.Title,
+       IsComplete = todoItem.IsComplete,
+       Description = todoItem.Description,
+       DueDate = todoItem.DueDate,
+       CreatedAt = todoItem.CreatedAt,
+       UpdatedAt = todoItem.UpdatedAt,
      };
 
   private async Task<bool> TodoItemExistsAsync(long id)

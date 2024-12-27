@@ -20,7 +20,7 @@ public class TodoItemsController : ControllerBase
     // GET: api/TodoItems
     [HttpGet]
     [Authorize]
-    public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems()
+    public async Task<ActionResult<GetTodoItemsResponse>> GetTodoItems()
     {
         try
         {
@@ -28,21 +28,36 @@ public class TodoItemsController : ControllerBase
 
             if (string.IsNullOrEmpty(userId))
             {
-                return Unauthorized(new { message = "User is not authorized." });
+                return Unauthorized(new GetTodoItemsResponse
+                {
+                    Success = false,
+                    ErrorMessage = "User is not authorized.",
+                    Data = null
+                });
             }
 
-            var todoItems = await _todoService.GetTodoItemsByUserAsync(userId);
-            return Ok(todoItems);
+            var result = await _todoService.GetTodoItemsByUserAsync(userId);
+            return Ok(result);
         }
         catch (ApplicationException exception)
         {
             Console.Error.WriteLine($"Error in GetTodoItems: {exception.Message}");
-            return StatusCode(StatusCodes.Status500InternalServerError, new { message = exception.Message });
+            return StatusCode(StatusCodes.Status500InternalServerError, new GetTodoItemsResponse
+            {
+                Success = false,
+                ErrorMessage = exception.Message,
+                Data = null,
+            });
         }
         catch (Exception ex)
         {
             Console.Error.WriteLine($"Unexpected error: {ex.Message}");
-            return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An unexpected error occurred." });
+            return StatusCode(StatusCodes.Status500InternalServerError, new GetTodoItemsResponse
+            {
+                Success = false,
+                ErrorMessage = ex.Message ?? "An unexpected error occured",
+                Data = null,
+            });
         }
     }
 
@@ -176,7 +191,7 @@ public class TodoItemsController : ControllerBase
        new TodoItemDTO
        {
            Id = todoItem.Id,
-           Name = todoItem.Name,
+           Title = todoItem.Title,
            IsComplete = todoItem.IsComplete
        };
 }
