@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TodoApi.Extensions;
+using TodoApi.Models;
 
 namespace TodoApi.Controllers
 {
@@ -12,10 +13,12 @@ namespace TodoApi.Controllers
   public class AuthController : ControllerBase
   {
     private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly UserManager<IdentityUser> _userManager;
 
-    public AuthController(SignInManager<IdentityUser> signInManager)
+    public AuthController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
     {
       _signInManager = signInManager;
+      _userManager = userManager;
     }
 
     /// <summary>
@@ -40,6 +43,23 @@ namespace TodoApi.Controllers
       }
 
       return StatusCode(500, new { Message = errorMessage });
+    }
+
+    [HttpGet("me")]
+    [ProducesResponseType(typeof(UserDto), 200)]  // Specifies the return type as UserDto
+    [ProducesResponseType(typeof(object), 401)]  // Unauthorized response
+    [ProducesResponseType(typeof(object), 500)]  // Internal Server Error response
+
+    public async Task<IActionResult> GetCurrentUser()
+    {
+      var (success, user, errorMessage) = await IdentityExtension.GetCurrentUserAsync(HttpContext, _userManager);
+
+      if (success)
+      {
+        return Ok(user);
+      }
+
+      return Unauthorized(new { Message = errorMessage });
     }
   }
 }
