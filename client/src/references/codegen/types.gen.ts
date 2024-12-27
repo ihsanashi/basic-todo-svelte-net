@@ -82,6 +82,14 @@ export type TwoFactorResponse = {
     isMachineRemembered: boolean;
 };
 
+export type UserDto = {
+    id: (string) | null;
+    email: (string) | null;
+    emailConfirmed: boolean;
+    phoneNumber?: (string) | null;
+    phoneNumberConfirmed: boolean;
+};
+
 export type PostApiAuthRegisterData = {
     body: RegisterRequest;
 };
@@ -173,6 +181,10 @@ export type PostApiAuthLogoutData = {
 export type PostApiAuthLogoutResponse = (unknown);
 
 export type PostApiAuthLogoutError = unknown;
+
+export type GetApiAuthMeResponse = (UserDto);
+
+export type GetApiAuthMeError = (unknown);
 
 export type GetApiTodoItemsResponse = (Array<TodoItemDTO>);
 

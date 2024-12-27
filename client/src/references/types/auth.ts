@@ -1,17 +1,14 @@
 import type {
+	GetApiAuthMeResponse,
 	PostApiAuthForgotPasswordResponse,
 	PostApiAuthLoginResponse,
 	PostApiAuthRegisterResponse,
+	UserDto,
 } from '../codegen';
-
-export interface User {
-	email: string;
-	isEmailConfirmed: boolean;
-}
 
 export interface AuthStore {
 	isAuthenticated: boolean;
-	user: User | null;
+	user: UserDto | null;
 }
 
 export interface GenericPostAuthApiResponse {
@@ -20,5 +17,9 @@ export interface GenericPostAuthApiResponse {
 		title: string;
 		description: string;
 	};
-	data?: PostApiAuthLoginResponse | PostApiAuthRegisterResponse | PostApiAuthForgotPasswordResponse;
+	data?:
+		| PostApiAuthLoginResponse
+		| PostApiAuthRegisterResponse
+		| PostApiAuthForgotPasswordResponse
+		| GetApiAuthMeResponse;
 }
