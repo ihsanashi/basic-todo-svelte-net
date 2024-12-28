@@ -23,17 +23,24 @@
     - [x] Loading state
     - [x] Prevent logged in users from accessing auth page
     - [x] Beautify module import path
-- [ ] [**Full-stack**]: Todos
+- [ ] [**Full-stack**]: Pages
   - [x] Data modelling
-  - [ ] Pagination
-  - [ ] Filtering?
+  - [x] Simple navbar
+    - [x] App title on the left side
+    - [x] User email in the center
+    - [x] New todo button on the right side
   - [ ] Homepage UI
     - [ ] List of a user's todos
-    - [ ] Create todos
-  - [ ] (If time allows) Unit tests
-  - [ ] Implement todo details page UI
+    - [ ] Pagination
+    - [ ] Filtering?
+  - [ ] Todo details page UI
     - [ ] Update a todo
     - [ ] Delete a todo
+  - [ ] New todo page
+    - [ ] Create todos
+    - [ ] Redirect to todo details page after successful creation
+  - [x] Profile page
+  - [ ] (If time allows) Unit tests
 - [ ] [Nice to haves]
   - [ ] Frontend: Validate on input change
   - [ ] Backend: Email service (with MailKit package) for account confirmation and password reset
