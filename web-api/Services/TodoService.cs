@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
 
@@ -14,12 +13,13 @@ public class TodoService
     _context = context;
   }
 
-  public async Task<GetTodoItemsResponse> GetTodoItemsByUserAsync(string userId)
+  public async Task<TodoItemsMultipleResponse> GetTodoItemsByUserAsync(string userId)
   {
     try
     {
       var items = await _context.TodoItems
-      .Where(x => x.UserId == userId)
+      .Where(x => x.UserId == userId &&
+      (x.IsDeleted == null || x.IsDeleted == false))
       .OrderByDescending(item => item.CreatedAt)
       .Select(x => new TodoItemDTO
       {
@@ -32,16 +32,16 @@ public class TodoService
         UpdatedAt = x.UpdatedAt,
       }).ToListAsync();
 
-      return new GetTodoItemsResponse
+      return new TodoItemsMultipleResponse
       {
         Success = true,
-        Data = items
+        Data = items,
       };
     }
     catch (Exception exception)
     {
       Console.Error.WriteLine($"Error fetching todo items for userId {userId}: {exception.Message}");
-      return new GetTodoItemsResponse
+      return new TodoItemsMultipleResponse
       {
         Success = false,
         ErrorMessage = $"Unable to retrieve todo items for userId {userId}. {exception}",
@@ -113,35 +113,66 @@ public class TodoService
     }
   }
 
-  public async Task<TodoItemDTO> CreateTodoItemsAsync(TodoItemDTO todoItemDTO, string userId)
+  public async Task<TodoItemResponse> CreateTodoItemsAsync(TodoItemDTO todoItemDTO, string userId)
   {
-    var todoItem = new TodoItem
+    if (string.IsNullOrWhiteSpace(todoItemDTO.Title))
     {
-      Title = todoItemDTO.Title,
-      IsComplete = todoItemDTO.IsComplete,
-      Description = todoItemDTO.Description,
-      DueDate = todoItemDTO.DueDate,
-      CreatedAt = DateTime.UtcNow,
-      UpdatedAt = DateTime.UtcNow,
-      UserId = userId,
-    };
+      return new TodoItemResponse
+      {
+        Success = false,
+        Data = null,
+        ErrorMessage = "The title is required, and cannot be empty.",
+      };
+    }
 
-    _context.TodoItems.Add(todoItem);
-    await _context.SaveChangesAsync();
-
-    return new TodoItemDTO
+    try
     {
-      Id = todoItem.Id,
-      Title = todoItem.Title,
-      IsComplete = todoItem.IsComplete,
-      Description = todoItem.Description,
-      DueDate = todoItem.DueDate,
-      CreatedAt = todoItem.CreatedAt,
-      UpdatedAt = todoItem.UpdatedAt,
-    };
+      var todoItem = new TodoItem
+      {
+        Title = todoItemDTO.Title,
+        IsComplete = todoItemDTO.IsComplete,
+        Description = todoItemDTO.Description,
+        DueDate = todoItemDTO.DueDate,
+        CreatedAt = DateTime.UtcNow,
+        UpdatedAt = DateTime.UtcNow,
+        UserId = userId,
+      };
+
+      _context.TodoItems.Add(todoItem);
+      await _context.SaveChangesAsync();
+
+      var itemRes = new TodoItemDTO
+      {
+        Id = todoItem.Id,
+        Title = todoItem.Title,
+        IsComplete = todoItem.IsComplete,
+        Description = todoItem.Description,
+        DueDate = todoItem.DueDate,
+        CreatedAt = todoItem.CreatedAt,
+        UpdatedAt = todoItem.UpdatedAt,
+      };
+
+      return new TodoItemResponse
+      {
+        Success = true,
+        Data = itemRes,
+        ErrorMessage = null,
+      };
+    }
+    catch (Exception exception)
+    {
+      Console.Error.WriteLine($"Error creating a todo item for userId {userId}: {exception.Message}");
+
+      return new TodoItemResponse
+      {
+        Data = null,
+        Success = false,
+        ErrorMessage = $"Unable to save a todo item for userId {userId}"
+      };
+    }
   }
 
-  public async Task<PostTodoItemsBulkSaveResponse> SaveTodoItemsAsync(IEnumerable<TodoItemDTO> todoItems, string userId)
+  public async Task<TodoItemsMultipleResponse> SaveTodoItemsAsync(IEnumerable<TodoItemDTO> todoItems, string userId)
   {
     try
     {
@@ -205,7 +236,7 @@ public class TodoService
 
       await _context.SaveChangesAsync();
 
-      return new PostTodoItemsBulkSaveResponse
+      return new TodoItemsMultipleResponse
       {
         Success = true,
         Data = savedItems,
@@ -216,7 +247,7 @@ public class TodoService
     catch (Exception exception)
     {
       Console.Error.WriteLine($"Error saving todo items in bulk for userId {userId}: {exception.Message}");
-      return new PostTodoItemsBulkSaveResponse
+      return new TodoItemsMultipleResponse
       {
         Data = null,
         Success = false,
@@ -225,18 +256,40 @@ public class TodoService
     }
   }
 
-  public async Task<bool> DeleteTodoItemsAsync(long id, string userId)
+  public async Task<TodoItemDeletionResponse> DeleteTodoItemsAsync(long id, string userId, bool permanentDelete = false)
   {
-    var todoItem = await _context.TodoItems.Where(t => t.Id == id && t.UserId == userId).FirstOrDefaultAsync();
+    var todoItem = await _context.TodoItems
+      .Where(t => t.Id == id && t.UserId == userId
+      && (t.IsDeleted == null || t.IsDeleted == false))
+      .FirstOrDefaultAsync();
 
     if (todoItem == null)
     {
-      return false;
+      return new TodoItemDeletionResponse
+      {
+        Success = false,
+        ErrorMessage = $"Todo item with ID {id} not found, or already deleted."
+      };
     }
 
-    _context.TodoItems.Remove(todoItem);
+    if (permanentDelete)
+    {
+      _context.TodoItems.Remove(todoItem);
+    }
+    else
+    {
+      todoItem.IsDeleted = true;
+      todoItem.DeletedAt = DateTime.UtcNow;
+      _context.TodoItems.Update(todoItem);
+    }
+
     await _context.SaveChangesAsync();
-    return true;
+
+    return new TodoItemDeletionResponse
+    {
+      Success = true,
+      ErrorMessage = null,
+    };
   }
 
   private static TodoItemDTO ItemToDTO(TodoItem todoItem) =>

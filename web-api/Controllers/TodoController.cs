@@ -20,7 +20,7 @@ public class TodoItemsController : ControllerBase
     // GET: api/TodoItems
     [HttpGet]
     [Authorize]
-    public async Task<ActionResult<GetTodoItemsResponse>> GetTodoItems()
+    public async Task<ActionResult<TodoItemResponse>> GetTodoItems()
     {
         try
         {
@@ -28,7 +28,7 @@ public class TodoItemsController : ControllerBase
 
             if (string.IsNullOrEmpty(userId))
             {
-                return Unauthorized(new GetTodoItemsResponse
+                return Unauthorized(new TodoItemResponse
                 {
                     Success = false,
                     ErrorMessage = "User is not authorized.",
@@ -42,7 +42,7 @@ public class TodoItemsController : ControllerBase
         catch (ApplicationException exception)
         {
             Console.Error.WriteLine($"Error in GetTodoItems: {exception.Message}");
-            return StatusCode(StatusCodes.Status500InternalServerError, new GetTodoItemsResponse
+            return StatusCode(StatusCodes.Status500InternalServerError, new TodoItemResponse
             {
                 Success = false,
                 ErrorMessage = exception.Message,
@@ -52,7 +52,7 @@ public class TodoItemsController : ControllerBase
         catch (Exception ex)
         {
             Console.Error.WriteLine($"Unexpected error: {ex.Message}");
-            return StatusCode(StatusCodes.Status500InternalServerError, new GetTodoItemsResponse
+            return StatusCode(StatusCodes.Status500InternalServerError, new TodoItemResponse
             {
                 Success = false,
                 ErrorMessage = ex.Message ?? "An unexpected error occured",
@@ -73,7 +73,7 @@ public class TodoItemsController : ControllerBase
 
             if (string.IsNullOrEmpty(userId))
             {
-                return Unauthorized(new { message = "User is not authorized" });
+                return Unauthorized(new { message = "User is not authorized." });
             }
 
             var todoItem = await _todoService.GetTodoItemByIdAsync(id, userId);
@@ -111,7 +111,7 @@ public class TodoItemsController : ControllerBase
 
             if (string.IsNullOrEmpty(userId))
             {
-                return Unauthorized(new { message = "User is not authorized" });
+                return Unauthorized(new { message = "User is not authorized." });
             }
 
             var updatedItem = await _todoService.UpdateTodoItemAsync(id, todoDTO, userId);
@@ -136,32 +136,7 @@ public class TodoItemsController : ControllerBase
     // <snippet_Create>
     [HttpPost]
     [Authorize]
-    public async Task<ActionResult<TodoItemDTO>> PostTodoItem(TodoItemDTO todoDTO)
-    {
-        var userId = User.FindFirst("sub")?.Value;
-
-        if (string.IsNullOrEmpty(userId))
-        {
-            return Unauthorized();
-        }
-
-        try
-        {
-            var createdItem = await _todoService.CreateTodoItemsAsync(todoDTO, userId);
-            return CreatedAtAction(nameof(GetTodoItem), createdItem);
-        }
-        catch (Exception ex)
-        {
-            Console.Error.WriteLine($"Error creating todo item: {ex.Message}");
-            return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while creating a todo item." });
-        }
-    }
-    // </snippet_Create>
-
-    // POST: api/todos
-    [HttpPost("bulk")]
-    [Authorize]
-    public async Task<ActionResult<PostTodoItemsBulkSaveResponse>> SaveTodoItems([FromBody] IEnumerable<TodoItemDTO> todoItems)
+    public async Task<ActionResult<TodoItemResponse>> PostTodoItem(TodoItemDTO todoDTO)
     {
         try
         {
@@ -169,7 +144,50 @@ public class TodoItemsController : ControllerBase
 
             if (string.IsNullOrEmpty(userId))
             {
-                return Unauthorized(new PostTodoItemsBulkSaveResponse
+                return Unauthorized(new TodoItemResponse
+                {
+                    Success = false,
+                    ErrorMessage = "User is not authorized."
+                });
+            }
+
+            await _todoService.CreateTodoItemsAsync(todoDTO, userId);
+
+            var response = new TodoItemResponse
+            {
+                Success = true,
+                Data = todoDTO,
+                ErrorMessage = null,
+            };
+
+            return CreatedAtAction(nameof(GetTodoItem), new { id = todoDTO.Id }, response);
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Error creating todo item: {ex.Message}");
+            var errorResponse = new TodoItemResponse
+            {
+                Success = false,
+                ErrorMessage = "An error occurred while creating a todo item."
+            };
+
+            return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
+        }
+    }
+    // </snippet_Create>
+
+    // POST: api/todos
+    [HttpPost("bulk")]
+    [Authorize]
+    public async Task<ActionResult<TodoItemsMultipleResponse>> SaveTodoItems([FromBody] IEnumerable<TodoItemDTO> todoItems)
+    {
+        try
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new TodoItemsMultipleResponse
                 {
                     Success = false,
                     ErrorMessage = "User is not authorized.",
@@ -191,7 +209,7 @@ public class TodoItemsController : ControllerBase
     // DELETE: api/TodoItems/5
     [HttpDelete("{id}")]
     [Authorize]
-    public async Task<IActionResult> DeleteTodoItem(long id)
+    public async Task<ActionResult<TodoItemDeletionResponse>> DeleteTodoItem(long id, [FromBody] bool permanentDelete = false)
     {
         try
         {
@@ -199,21 +217,28 @@ public class TodoItemsController : ControllerBase
 
             if (string.IsNullOrEmpty(userId))
             {
-                return Unauthorized(new { message = "User is not authorized" });
+                return Unauthorized(new TodoItemDeletionResponse
+                {
+                    Success = false,
+                    ErrorMessage = "User is not authorized."
+                });
             }
 
-            var result = await _todoService.DeleteTodoItemsAsync(id, userId);
-            if (!result)
+            var result = await _todoService.DeleteTodoItemsAsync(id, userId, permanentDelete);
+            if (!result.Success)
             {
-                return NotFound(new { message = $"Todo item with ID {id} not found." });
+                return NotFound(new { errorMessage = $"Todo item with ID {id} not found." });
             }
 
-            return NoContent();
+            return StatusCode(StatusCodes.Status204NoContent, new { errorMessage = $"Todo item with ID {id} was deleted softly" });
         }
         catch (Exception ex)
         {
             Console.Error.WriteLine($"Error deleting todo item with ID {id}.", ex.Message);
-            return StatusCode(StatusCodes.Status500InternalServerError, new { message = $"An error occurred while deleting the todo item with ID {id}" });
+            return StatusCode(StatusCodes.Status500InternalServerError, new
+            {
+                errorMessage = $"An error occurred while deleting the todo item with ID {id}"
+            });
         }
     }
 
