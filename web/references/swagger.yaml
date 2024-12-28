@@ -267,13 +267,13 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/GetTodoItemsResponse'
+                $ref: '#/components/schemas/TodoItemResponse'
             application/json:
               schema:
-                $ref: '#/components/schemas/GetTodoItemsResponse'
+                $ref: '#/components/schemas/TodoItemResponse'
             text/json:
               schema:
-                $ref: '#/components/schemas/GetTodoItemsResponse'
+                $ref: '#/components/schemas/TodoItemResponse'
     post:
       tags:
         - TodoItems
@@ -294,13 +294,13 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/TodoItemDTO'
+                $ref: '#/components/schemas/TodoItemResponse'
             application/json:
               schema:
-                $ref: '#/components/schemas/TodoItemDTO'
+                $ref: '#/components/schemas/TodoItemResponse'
             text/json:
               schema:
-                $ref: '#/components/schemas/TodoItemDTO'
+                $ref: '#/components/schemas/TodoItemResponse'
   '/api/TodoItems/{id}':
     get:
       tags:
@@ -359,9 +359,33 @@ paths:
           schema:
             type: integer
             format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: boolean
+              default: false
+          text/json:
+            schema:
+              type: boolean
+              default: false
+          application/*+json:
+            schema:
+              type: boolean
+              default: false
       responses:
         '200':
           description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/TodoItemDeletionResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoItemDeletionResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/TodoItemDeletionResponse'
   /api/TodoItems/bulk:
     post:
       tags:
@@ -389,13 +413,13 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/PostTodoItemsBulkSaveResponse'
+                $ref: '#/components/schemas/TodoItemsMultipleResponse'
             application/json:
               schema:
-                $ref: '#/components/schemas/PostTodoItemsBulkSaveResponse'
+                $ref: '#/components/schemas/TodoItemsMultipleResponse'
             text/json:
               schema:
-                $ref: '#/components/schemas/PostTodoItemsBulkSaveResponse'
+                $ref: '#/components/schemas/TodoItemsMultipleResponse'
 components:
   schemas:
     AccessTokenResponse:
@@ -426,20 +450,6 @@ components:
       properties:
         email:
           type: string
-          nullable: true
-      additionalProperties: false
-    GetTodoItemsResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        errorMessage:
-          type: string
-          nullable: true
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/TodoItemDTO'
           nullable: true
       additionalProperties: false
     HttpValidationProblemDetails:
@@ -511,20 +521,6 @@ components:
           nullable: true
         twoFactorRecoveryCode:
           type: string
-          nullable: true
-      additionalProperties: false
-    PostTodoItemsBulkSaveResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        errorMessage:
-          type: string
-          nullable: true
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/TodoItemDTO'
           nullable: true
       additionalProperties: false
     RefreshRequest:
@@ -601,6 +597,47 @@ components:
         updatedAt:
           type: string
           format: date-time
+        isDeleted:
+          type: boolean
+          nullable: true
+        deletedAt:
+          type: string
+          format: date-time
+          nullable: true
+      additionalProperties: false
+    TodoItemDeletionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        errorMessage:
+          type: string
+          nullable: true
+      additionalProperties: false
+    TodoItemResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        errorMessage:
+          type: string
+          nullable: true
+        data:
+          $ref: '#/components/schemas/TodoItemDTO'
+      additionalProperties: false
+    TodoItemsMultipleResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        errorMessage:
+          type: string
+          nullable: true
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TodoItemDTO'
+          nullable: true
       additionalProperties: false
     TwoFactorRequest:
       type: object

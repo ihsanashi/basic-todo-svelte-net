@@ -11,12 +11,6 @@ export type ForgotPasswordRequest = {
     email: (string) | null;
 };
 
-export type GetTodoItemsResponse = {
-    success?: boolean;
-    errorMessage?: (string) | null;
-    data?: Array<TodoItemDTO> | null;
-};
-
 export type HttpValidationProblemDetails = {
     type?: (string) | null;
     title?: (string) | null;
@@ -47,12 +41,6 @@ export type LoginRequest = {
     twoFactorRecoveryCode?: (string) | null;
 };
 
-export type PostTodoItemsBulkSaveResponse = {
-    success?: boolean;
-    errorMessage?: (string) | null;
-    data?: Array<TodoItemDTO> | null;
-};
-
 export type RefreshRequest = {
     refreshToken: (string) | null;
 };
@@ -72,6 +60,11 @@ export type ResetPasswordRequest = {
     newPassword: (string) | null;
 };
 
+export type TodoItemDeletionResponse = {
+    success?: boolean;
+    errorMessage?: (string) | null;
+};
+
 export type TodoItemDTO = {
     id?: number;
     title: (string) | null;
@@ -80,6 +73,20 @@ export type TodoItemDTO = {
     dueDate?: (string) | null;
     createdAt?: string;
     updatedAt?: string;
+    isDeleted?: (boolean) | null;
+    deletedAt?: (string) | null;
+};
+
+export type TodoItemResponse = {
+    success?: boolean;
+    errorMessage?: (string) | null;
+    data?: TodoItemDTO;
+};
+
+export type TodoItemsMultipleResponse = {
+    success?: boolean;
+    errorMessage?: (string) | null;
+    data?: Array<TodoItemDTO> | null;
 };
 
 export type TwoFactorRequest = {
@@ -202,7 +209,7 @@ export type GetApiAuthMeResponse = (UserDto);
 
 export type GetApiAuthMeError = (unknown);
 
-export type GetApiTodoItemsResponse = (GetTodoItemsResponse);
+export type GetApiTodoItemsResponse = (TodoItemResponse);
 
 export type GetApiTodoItemsError = unknown;
 
@@ -210,7 +217,7 @@ export type PostApiTodoItemsData = {
     body?: TodoItemDTO;
 };
 
-export type PostApiTodoItemsResponse = (TodoItemDTO);
+export type PostApiTodoItemsResponse = (TodoItemResponse);
 
 export type PostApiTodoItemsError = unknown;
 
@@ -236,12 +243,13 @@ export type PutApiTodoItemsByIdResponse = (unknown);
 export type PutApiTodoItemsByIdError = unknown;
 
 export type DeleteApiTodoItemsByIdData = {
+    body?: boolean;
     path: {
         id: number;
     };
 };
 
-export type DeleteApiTodoItemsByIdResponse = (unknown);
+export type DeleteApiTodoItemsByIdResponse = (TodoItemDeletionResponse);
 
 export type DeleteApiTodoItemsByIdError = unknown;
 
@@ -249,6 +257,6 @@ export type PostApiTodoItemsBulkData = {
     body?: Array<TodoItemDTO>;
 };
 
-export type PostApiTodoItemsBulkResponse = (PostTodoItemsBulkSaveResponse);
+export type PostApiTodoItemsBulkResponse = (TodoItemsMultipleResponse);
 
 export type PostApiTodoItemsBulkError = unknown;

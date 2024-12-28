@@ -442,17 +442,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetTodoItemsResponse"
+                  "$ref": "#/components/schemas/TodoItemResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetTodoItemsResponse"
+                  "$ref": "#/components/schemas/TodoItemResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetTodoItemsResponse"
+                  "$ref": "#/components/schemas/TodoItemResponse"
                 }
               }
             }
@@ -488,17 +488,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/TodoItemDTO"
+                  "$ref": "#/components/schemas/TodoItemResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TodoItemDTO"
+                  "$ref": "#/components/schemas/TodoItemResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TodoItemDTO"
+                  "$ref": "#/components/schemas/TodoItemResponse"
                 }
               }
             }
@@ -600,9 +600,48 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "boolean",
+                "default": false
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "boolean",
+                "default": false
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "boolean",
+                "default": false
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TodoItemDeletionResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TodoItemDeletionResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TodoItemDeletionResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -646,17 +685,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostTodoItemsBulkSaveResponse"
+                  "$ref": "#/components/schemas/TodoItemsMultipleResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostTodoItemsBulkSaveResponse"
+                  "$ref": "#/components/schemas/TodoItemsMultipleResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostTodoItemsBulkSaveResponse"
+                  "$ref": "#/components/schemas/TodoItemsMultipleResponse"
                 }
               }
             }
@@ -703,26 +742,6 @@
         "properties": {
           "email": {
             "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "GetTodoItemsResponse": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "errorMessage": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TodoItemDTO"
-            },
             "nullable": true
           }
         },
@@ -821,26 +840,6 @@
           },
           "twoFactorRecoveryCode": {
             "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "PostTodoItemsBulkSaveResponse": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "errorMessage": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TodoItemDTO"
-            },
             "nullable": true
           }
         },
@@ -946,6 +945,64 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "isDeleted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "deletedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TodoItemDeletionResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errorMessage": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TodoItemResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errorMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/TodoItemDTO"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TodoItemsMultipleResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errorMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TodoItemDTO"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
