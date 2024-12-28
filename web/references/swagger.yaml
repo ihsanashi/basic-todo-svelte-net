@@ -362,6 +362,40 @@ paths:
       responses:
         '200':
           description: OK
+  /api/TodoItems/bulk:
+    post:
+      tags:
+        - TodoItems
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/TodoItemDTO'
+          text/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/TodoItemDTO'
+          application/*+json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/TodoItemDTO'
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/PostTodoItemsBulkSaveResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostTodoItemsBulkSaveResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/PostTodoItemsBulkSaveResponse'
 components:
   schemas:
     AccessTokenResponse:
@@ -477,6 +511,20 @@ components:
           nullable: true
         twoFactorRecoveryCode:
           type: string
+          nullable: true
+      additionalProperties: false
+    PostTodoItemsBulkSaveResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        errorMessage:
+          type: string
+          nullable: true
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TodoItemDTO'
           nullable: true
       additionalProperties: false
     RefreshRequest:

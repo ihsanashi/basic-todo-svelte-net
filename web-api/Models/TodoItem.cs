@@ -29,3 +29,10 @@ public class GetTodoItemsResponse
   public string? ErrorMessage { get; set; }
   public IEnumerable<TodoItemDTO>? Data { get; set; }
 }
+
+public class PostTodoItemsBulkSaveResponse
+{
+  public bool Success { get; set; }
+  public string? ErrorMessage { get; set; }
+  public IEnumerable<TodoItemDTO>? Data { get; set; }
+}

@@ -158,6 +158,36 @@ public class TodoItemsController : ControllerBase
     }
     // </snippet_Create>
 
+    // POST: api/todos
+    [HttpPost("bulk")]
+    [Authorize]
+    public async Task<ActionResult<PostTodoItemsBulkSaveResponse>> SaveTodoItems([FromBody] IEnumerable<TodoItemDTO> todoItems)
+    {
+        try
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new PostTodoItemsBulkSaveResponse
+                {
+                    Success = false,
+                    ErrorMessage = "User is not authorized.",
+                    Data = null
+                });
+            }
+
+            var result = await _todoService.SaveTodoItemsAsync(todoItems, userId);
+
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Error saving todos: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while saving todo items." });
+        }
+    }
+
     // DELETE: api/TodoItems/5
     [HttpDelete("{id}")]
     [Authorize]

@@ -18,7 +18,10 @@ public class TodoService
   {
     try
     {
-      var items = await _context.TodoItems.Where(x => x.UserId == userId).Select(x => new TodoItemDTO
+      var items = await _context.TodoItems
+      .Where(x => x.UserId == userId)
+      .OrderByDescending(item => item.CreatedAt)
+      .Select(x => new TodoItemDTO
       {
         Id = x.Id,
         Title = x.Title,
@@ -136,6 +139,90 @@ public class TodoService
       CreatedAt = todoItem.CreatedAt,
       UpdatedAt = todoItem.UpdatedAt,
     };
+  }
+
+  public async Task<PostTodoItemsBulkSaveResponse> SaveTodoItemsAsync(IEnumerable<TodoItemDTO> todoItems, string userId)
+  {
+    try
+    {
+      var savedItems = new List<TodoItemDTO>();
+
+      foreach (var todoItem in todoItems)
+      {
+        // Check if the item exists (update) or is new (create)
+        var existingItem = todoItem.Id != 0
+        ? await _context.TodoItems.FirstOrDefaultAsync(item => item.Id == todoItem.Id && item.UserId == userId)
+        : null;
+
+        if (existingItem != null)
+        {
+          // Update existing item
+          existingItem.Title = todoItem.Title;
+          existingItem.IsComplete = todoItem.IsComplete;
+          existingItem.Description = todoItem.Description;
+          existingItem.DueDate = todoItem.DueDate;
+          existingItem.UpdatedAt = DateTime.UtcNow;
+
+          savedItems.Add(new TodoItemDTO
+          {
+            Id = existingItem.Id,
+            Title = existingItem.Title,
+            IsComplete = existingItem.IsComplete,
+            Description = existingItem.Description,
+            DueDate = existingItem.DueDate,
+            CreatedAt = existingItem.CreatedAt,
+            UpdatedAt = existingItem.UpdatedAt,
+          });
+        }
+        else
+        {
+          // Create new item
+          var newItem = new TodoItem
+          {
+            Title = todoItem.Title,
+            IsComplete = todoItem.IsComplete,
+            Description = todoItem.Description,
+            DueDate = todoItem.DueDate,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow,
+            UserId = userId,
+          };
+
+          _context.TodoItems.Add(newItem);
+
+          savedItems.Add(new TodoItemDTO
+          {
+            Id = newItem.Id,
+            Title = newItem.Title,
+            IsComplete = newItem.IsComplete,
+            Description = newItem.Description,
+            DueDate = newItem.DueDate,
+            CreatedAt = newItem.CreatedAt,
+            UpdatedAt = newItem.UpdatedAt,
+          });
+        }
+      }
+
+      await _context.SaveChangesAsync();
+
+      return new PostTodoItemsBulkSaveResponse
+      {
+        Success = true,
+        Data = savedItems,
+        ErrorMessage = null,
+      };
+
+    }
+    catch (Exception exception)
+    {
+      Console.Error.WriteLine($"Error saving todo items in bulk for userId {userId}: {exception.Message}");
+      return new PostTodoItemsBulkSaveResponse
+      {
+        Data = null,
+        Success = false,
+        ErrorMessage = $"Unable to save todo items in bulk for userId {userId}"
+      };
+    }
   }
 
   public async Task<bool> DeleteTodoItemsAsync(long id, string userId)
