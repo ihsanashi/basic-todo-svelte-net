@@ -42,17 +42,18 @@
         - [x] When empty
         - [x] When there are results
     - [x] Save new entries by bulk in the background
-      - [ ] Frontend and backend validation (title must not be null)
-        - [ ] Show toast message for error
+      - [x] Frontend and backend validation (title must not be null)
     - [ ] Pagination?
     - [ ] Filtering?
     - [ ] Sorting?
   - [ ] Todo details page UI
     - [ ] Update a todo
     - [ ] Delete a todo
-  - [ ] New todo page (single todo item creation)
+      - [ ] Entity framework: add soft delete for Todo model
+      - [ ] Modal for user to select whether to permanently delete, soft delete or cancel
+  - [x] New todo page (single todo item creation)
     - [x] UI
-    - [ ] API integration
+    - [x] API integration
   - [x] Profile page
     - [x] Avatar in Navbar
   - [ ] (If time allows) Unit tests
