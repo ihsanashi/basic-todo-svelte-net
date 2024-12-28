@@ -15,6 +15,7 @@ const config = {
 		alias: {
 			'@api': 'src/api',
 			'@app': 'src',
+			'@components': 'src/lib/components',
 			'@lib': 'src/lib',
 			'@references': 'src/references',
 			'@stores': 'src/stores',
