@@ -30,16 +30,26 @@
     - [x] User email in the center
     - [x] New todo button on the right side
   - [ ] Homepage UI
-    - [ ] List of a user's todos
-    - [ ] Pagination
+    - [ ] Structure
+      - [ ] Pagination (later)
+      - [x] Add new button
+        - [ ] when clicked, shows the fields for a todo item, comprised of
+          - [x] Accordion, that expands and collapses the todo item
+          - [x] Checkbox, that stores the todo item's status
+          - [x] Input for the Title
+          - [x] Textarea for Description (hidden until expanded)
+          - [x] Date picker for Due Date (hidden until expanded)
+      - [ ] List of a user's todos
+        - [x] When empty
+        - [ ] When there are results
+    - [ ] Save new entries in the background (yet to figure out the mechanism for this)
     - [ ] Filtering?
   - [ ] Todo details page UI
     - [ ] Update a todo
     - [ ] Delete a todo
-  - [ ] New todo page
-    - [ ] Create todos
-    - [ ] Redirect to todo details page after successful creation
+  - [ ] New todo page (to be deleted)
   - [x] Profile page
+    - [x] Avatar in Navbar
   - [ ] (If time allows) Unit tests
 - [ ] [Nice to haves]
   - [ ] Frontend: Validate on input change
