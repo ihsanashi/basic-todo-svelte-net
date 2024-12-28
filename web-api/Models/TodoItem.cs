@@ -31,16 +31,22 @@ public class TodoItemDTO
   public DateTime? DeletedAt { get; set; }
 }
 
-public class GetTodoItemsResponse
+public class TodoItemResponse
+{
+  public bool Success { get; set; }
+  public string? ErrorMessage { get; set; }
+  public TodoItemDTO? Data { get; set; }
+}
+
+public class TodoItemsMultipleResponse
 {
   public bool Success { get; set; }
   public string? ErrorMessage { get; set; }
   public IEnumerable<TodoItemDTO>? Data { get; set; }
 }
 
-public class PostTodoItemsBulkSaveResponse
+public class TodoItemDeletionResponse
 {
   public bool Success { get; set; }
   public string? ErrorMessage { get; set; }
-  public IEnumerable<TodoItemDTO>? Data { get; set; }
 }
