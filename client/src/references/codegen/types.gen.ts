@@ -47,6 +47,12 @@ export type LoginRequest = {
     twoFactorRecoveryCode?: (string) | null;
 };
 
+export type PostTodoItemsBulkSaveResponse = {
+    success?: boolean;
+    errorMessage?: (string) | null;
+    data?: Array<TodoItemDTO> | null;
+};
+
 export type RefreshRequest = {
     refreshToken: (string) | null;
 };
@@ -238,3 +244,11 @@ export type DeleteApiTodoItemsByIdData = {
 export type DeleteApiTodoItemsByIdResponse = (unknown);
 
 export type DeleteApiTodoItemsByIdError = unknown;
+
+export type PostApiTodoItemsBulkData = {
+    body?: Array<TodoItemDTO>;
+};
+
+export type PostApiTodoItemsBulkResponse = (PostTodoItemsBulkSaveResponse);
+
+export type PostApiTodoItemsBulkError = unknown;
