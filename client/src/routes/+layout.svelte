@@ -2,6 +2,8 @@
 	import '@app/app.css';
 	import { onMount } from 'svelte';
 
+	import { LayoutContainer } from '@components/layout-container';
+	import { Navbar } from '@components/navbar';
 	import { Toaster } from '$lib/components/ui/sonner';
 
 	import { authActions } from '@api';
@@ -27,6 +29,10 @@
 	});
 </script>
 
-<Toaster closeButton expand position="bottom-right" />
+<LayoutContainer>
+	<Navbar />
 
-<slot />
+	<Toaster closeButton expand position="bottom-right" />
+
+	<slot />
+</LayoutContainer>
