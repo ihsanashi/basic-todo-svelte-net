@@ -15,13 +15,7 @@
 	import { Label } from '@ui/label';
 	import PasswordInput from '@ui/password-input/password-input.svelte';
 
-	import {
-		emailSchema,
-		forgotPasswordSchema,
-		loginSchema,
-		passwordSchema,
-		registrationSchema,
-	} from '@references/schemas';
+	import { forgotPasswordSchema, loginSchema, registrationSchema } from '@references/validation';
 
 	const loadingText = 'Loading...';
 
