@@ -10,6 +10,10 @@ public class TodoItem
   public DateTime CreatedAt { get; set; }
   public DateTime UpdatedAt { get; set; }
   public required string UserId { get; set; }
+
+  // Soft delete properties
+  public bool? IsDeleted { get; set; }
+  public DateTime? DeletedAt { get; set; }
 }
 
 public class TodoItemDTO
@@ -21,6 +25,10 @@ public class TodoItemDTO
   public DateTime? DueDate { get; set; }
   public DateTime CreatedAt { get; set; }
   public DateTime UpdatedAt { get; set; }
+
+  // Soft delete properties
+  public bool? IsDeleted { get; set; }
+  public DateTime? DeletedAt { get; set; }
 }
 
 public class GetTodoItemsResponse
