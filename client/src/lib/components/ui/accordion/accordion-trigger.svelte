@@ -12,7 +12,7 @@
 </script>
 
 <AccordionPrimitive.Header {level} class="flex">
-	<div class="flex flex-row items-center">
+	<div class="flex w-full flex-row items-center">
 		<AccordionPrimitive.Trigger
 			class={cn(
 				'flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180',
