@@ -26,28 +26,33 @@
 - [ ] [**Full-stack**]: Pages
   - [x] Data modelling
   - [x] Simple navbar
-    - [x] App title on the left side
-    - [x] User email in the center
-    - [x] New todo button on the right side
+    - [x] Avatar on the left
+    - [x] App title on the center
+    - [x] New todo button on the right side (single todo, navigate to /new)
   - [ ] Homepage UI
-    - [ ] Structure
-      - [ ] Pagination (later)
+    - [x] Structure
       - [x] Add new button
-        - [ ] when clicked, shows the fields for a todo item, comprised of
+        - [x] when clicked, shows the fields for a todo item, comprised of
           - [x] Accordion, that expands and collapses the todo item
           - [x] Checkbox, that stores the todo item's status
           - [x] Input for the Title
           - [x] Textarea for Description (hidden until expanded)
           - [x] Date picker for Due Date (hidden until expanded)
-      - [ ] List of a user's todos
+      - [x] List of a user's todos
         - [x] When empty
-        - [ ] When there are results
-    - [ ] Save new entries in the background (yet to figure out the mechanism for this)
+        - [x] When there are results
+    - [x] Save new entries by bulk in the background
+      - [ ] Frontend and backend validation (title must not be null)
+        - [ ] Show toast message for error
+    - [ ] Pagination?
     - [ ] Filtering?
+    - [ ] Sorting?
   - [ ] Todo details page UI
     - [ ] Update a todo
     - [ ] Delete a todo
-  - [ ] New todo page (to be deleted)
+  - [ ] New todo page (single todo item creation)
+    - [x] UI
+    - [ ] API integration
   - [x] Profile page
     - [x] Avatar in Navbar
   - [ ] (If time allows) Unit tests
