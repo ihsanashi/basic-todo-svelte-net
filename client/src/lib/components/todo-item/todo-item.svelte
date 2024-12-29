@@ -20,11 +20,25 @@
 	import { commonDates, defaultTodo } from '@references/constants';
 	import type { TodoItemDTO } from '@app/references/codegen';
 
+	import dayjs from 'dayjs';
+	import localizedFormat from 'dayjs/plugin/localizedFormat';
+
+	dayjs.extend(localizedFormat);
+
+	let value: DateValue | undefined = undefined;
+
 	const df = new DateFormatter('en-US', {
 		dateStyle: 'long',
 	});
 
-	let value: DateValue | undefined = undefined;
+	// Format date strings
+	const formatDateTime = (dateString: string) => {
+		try {
+			return dayjs(dateString).format('llll');
+		} catch {
+			return 'Invalid date';
+		}
+	};
 
 	export let todo: TodoItemDTO = defaultTodo;
 </script>
@@ -95,10 +109,16 @@
 					</Popover.Content>
 				</Popover.Root>
 
-				<div class="flex flex-row items-center space-x-2">
-					<p class="text-xs text-slate-500">Created at: {todo.createdAt}</p>
-					<p class="text-xs text-slate-500">Updated at: {todo.updatedAt}</p>
-				</div>
+				{#if isExistingTodo}
+					<div class="flex flex-row items-center space-x-2">
+						<p class="text-xs text-slate-500">
+							Created at: {formatDateTime(todo.createdAt as string)}
+						</p>
+						<p class="text-xs text-slate-500">
+							Last updated: {formatDateTime(todo.updatedAt as string)}
+						</p>
+					</div>
+				{/if}
 			</div>
 		</Accordion.Content>
 	</Accordion.Item>
