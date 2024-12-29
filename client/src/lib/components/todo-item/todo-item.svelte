@@ -1,12 +1,14 @@
 <script lang="ts">
 	import * as Accordion from '@ui/accordion';
+	import * as AlertDialog from '@ui/alert-dialog';
+	import * as Popover from '@ui/popover';
+	import * as Select from '@ui/select/';
+
 	import { Button } from '@ui/button';
 	import { Calendar } from '@ui/calendar';
 	import { Checkbox } from '@ui/checkbox';
 	import { Input } from '@ui/input';
 	import { Label } from '@ui/label';
-	import * as Popover from '@ui/popover';
-	import * as Select from '@ui/select/';
 	import { Textarea } from '@ui/textarea';
 
 	import { CalendarIcon } from 'lucide-svelte';
