@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import { authActions, getAllTodos, bulkSaveTodos } from '@api';
+	import { authActions, getAllTodos, bulkSaveTodos, softDeleteTodo } from '@api';
 	import { authStore } from '@stores/auth';
 
 	import { Button } from '@ui/button';
 	import { TodoItem } from '@components/todo-item';
+
+	import { toast } from 'svelte-sonner';
 
 	import type { GetApiAuthMeResponse, TodoItemDTO } from '@references/codegen';
 	import { get, writable } from 'svelte/store';
@@ -58,6 +60,24 @@
 		}
 	}
 
+	async function handleDelete(todo: TodoItemDTO, type: boolean = false) {
+		if (!todo.id) {
+			$todoInputs = $todoInputs.filter((item) => item !== todo);
+			return;
+		}
+
+		const response = await softDeleteTodo(todo.id, type);
+
+		if (response.success) {
+			toast.success(`${type ? 'Permanently deleted' : 'Archived'} a todo item`);
+			await fetchTodos();
+		} else {
+			toast.error('Failed to delete a todo item', {
+				description: response.errorMessage || undefined,
+			});
+		}
+	}
+
 	onMount(async () => {
 		const response = await authActions.checkAuth();
 
@@ -88,7 +108,7 @@
 		<!-- Render newly added todos -->
 		{#each $todoInputs as todo, index}
 			<div class="my-2">
-				<TodoItem bind:todo={$todoInputs[index]} />
+				<TodoItem bind:todo={$todoInputs[index]} onDelete={handleDelete} />
 			</div>
 		{/each}
 
@@ -116,7 +136,7 @@
 			{:else}
 				<ul>
 					{#each $todos as todo}
-						<TodoItem bind:todo />
+						<TodoItem bind:todo onDelete={handleDelete} />
 					{/each}
 				</ul>
 			{/if}
