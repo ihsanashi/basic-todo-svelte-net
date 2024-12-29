@@ -47,7 +47,7 @@
 </script>
 
 <Accordion.Root>
-	<Accordion.Item value={`todo-${todo.id}`}>
+	<Accordion.Item class="border-none" value={`todo-${todo.id}`}>
 		<Accordion.Trigger>
 			<Checkbox
 				aria-label={`Mark as ${todo.isComplete} ? 'incomplete ' : 'complete'`}
