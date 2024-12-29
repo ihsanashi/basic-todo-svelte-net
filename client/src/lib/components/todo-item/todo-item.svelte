@@ -41,6 +41,9 @@
 	};
 
 	export let todo: TodoItemDTO = defaultTodo;
+	const isExistingTodo = !!todo.id;
+
+	export let onDelete: (todo: TodoItemDTO, isPermanent: boolean) => void;
 </script>
 
 <Accordion.Root>
@@ -83,7 +86,39 @@
 									{value ? df.format(value.toDate(getLocalTimeZone())) : 'Pick a date'}
 								</Button>
 							</div>
-							<Button variant="destructive">Delete</Button>
+							{#if isExistingTodo}
+								<AlertDialog.Root>
+									<AlertDialog.Trigger>
+										<Button variant="destructive">Delete</Button>
+									</AlertDialog.Trigger>
+									<AlertDialog.Content>
+										<AlertDialog.Header>
+											<AlertDialog.Title>Confirm deletion</AlertDialog.Title>
+											<AlertDialog.Description>
+												<p>Specify how you would like us to handle this item's deletion.</p>
+												<p><strong>Hard delete</strong>: Permanent deletion</p>
+												<p><strong>Soft delete</strong>: Think of it as archiving</p>
+												<p><strong>Cancel</strong>: To exit out of this dialog</p>
+											</AlertDialog.Description>
+										</AlertDialog.Header>
+										<AlertDialog.Footer>
+											<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+											<AlertDialog.Action
+												on:click={() => {
+													onDelete(todo, false);
+												}}>Soft delete</AlertDialog.Action
+											>
+											<AlertDialog.Action
+												on:click={() => {
+													onDelete(todo, true);
+												}}>Hard delete</AlertDialog.Action
+											>
+										</AlertDialog.Footer>
+									</AlertDialog.Content>
+								</AlertDialog.Root>
+							{:else}
+								<Button variant="destructive" on:click={() => onDelete(todo, false)}>Delete</Button>
+							{/if}
 						</div>
 					</Popover.Trigger>
 					<Popover.Content class="flex w-auto flex-col space-y-2 p-2">

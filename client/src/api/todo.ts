@@ -1,6 +1,11 @@
 import { API_TODO_URL } from '@references/constants';
 
-import type { TodoItemsMultipleResponse, TodoItemDTO, TodoItemResponse } from '@references/codegen';
+import type {
+	TodoItemsMultipleResponse,
+	TodoItemDTO,
+	TodoItemResponse,
+	TodoItemDeletionResponse,
+} from '@references/codegen';
 
 export async function getAllTodos(): Promise<TodoItemsMultipleResponse> {
 	try {
@@ -107,7 +112,10 @@ export async function postSingleTodo(todo: TodoItemDTO): Promise<TodoItemRespons
 	}
 }
 
-export async function softDeleteTodo(id: string) {
+export async function softDeleteTodo(
+	id: number,
+	permanentlyDelete: boolean
+): Promise<TodoItemDeletionResponse> {
 	try {
 		const response = await fetch(`${API_TODO_URL}/${id}`, {
 			credentials: 'include',
@@ -115,12 +123,27 @@ export async function softDeleteTodo(id: string) {
 			headers: {
 				'Content-Type': 'application/json',
 			},
+			body: JSON.stringify(permanentlyDelete),
 		});
 
-		// if (response.ok) {
-		// }
+		if (response.ok) {
+			return {
+				success: true,
+			};
+		} else {
+			const json: TodoItemDeletionResponse = await response.json();
+			return {
+				success: false,
+				errorMessage: json.errorMessage,
+			};
+		}
 	} catch (error) {
 		console.error(error);
 		const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+
+		return {
+			success: false,
+			errorMessage: errorMessage,
+		};
 	}
 }
