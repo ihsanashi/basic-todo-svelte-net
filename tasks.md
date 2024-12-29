@@ -43,14 +43,19 @@
         - [x] When there are results
     - [x] Save new entries by bulk in the background
       - [x] Frontend and backend validation (title must not be null)
+    - [ ] Show text on background sync, also for reset
+    - [ ] Manual bulk save button
+    - [ ] New todo item: validation
+    - [x] Pass on delete prop for todo item component
+    - [x] Format createdAt and updatedAt dates
     - [ ] Pagination?
     - [ ] Filtering?
     - [ ] Sorting?
   - [ ] Todo details page UI
     - [ ] Update a todo
-    - [ ] Delete a todo
-      - [ ] Entity framework: add soft delete for Todo model
-      - [ ] Modal for user to select whether to permanently delete, soft delete or cancel
+    - [x] Delete a todo
+      - [x] Entity framework: add soft delete for Todo model
+      - [x] Modal for user to select whether to permanently delete, soft delete or cancel
   - [x] New todo page (single todo item creation)
     - [x] UI
     - [x] API integration
