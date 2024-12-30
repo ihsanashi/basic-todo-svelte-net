@@ -29,6 +29,7 @@
     - [x] Avatar on the left
     - [x] App title on the center
     - [x] New todo button on the right side (single todo, navigate to /new)
+  - [ ] Make reusable todo item component
   - [ ] Homepage UI
     - [x] Structure
       - [x] Add new button
@@ -43,16 +44,22 @@
         - [x] When there are results
     - [x] Save new entries by bulk in the background
       - [x] Frontend and backend validation (title must not be null)
-    - [ ] Show text on background sync, also for reset
+      - [x] Reset timer
+        - [x] when a new item is added
+        - [x] when a new todo item's updated
+    - [x] Show text on background sync, also for reset
     - [ ] Manual bulk save button
-    - [ ] New todo item: validation
+    - [ ] Run validation
+      - [ ] On timer expiry
+      - [ ] On new item deletion
     - [x] Pass on delete prop for todo item component
     - [x] Format createdAt and updatedAt dates
     - [ ] Pagination?
     - [ ] Filtering?
     - [ ] Sorting?
   - [ ] Todo details page UI
-    - [ ] Update a todo
+    - [x] Routing
+    - [ ] Update a todo (new and old)
     - [x] Delete a todo
       - [x] Entity framework: add soft delete for Todo model
       - [x] Modal for user to select whether to permanently delete, soft delete or cancel
