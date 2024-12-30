@@ -23,6 +23,7 @@
 		>
 			<ChevronDown class="transition-transform duration-200" size={16} />
 		</AccordionPrimitive.Trigger>
-		<slot />
+		<slot name="title" />
+		<slot name="actions" />
 	</div>
 </AccordionPrimitive.Header>
