@@ -146,7 +146,7 @@ export async function postSingleTodo(todo: TodoItemDTO): Promise<TodoItemRespons
 	}
 }
 
-export async function softDeleteTodo(
+export async function deleteSingleTodo(
 	id: number,
 	permanentlyDelete: boolean
 ): Promise<TodoItemDeletionResponse> {
