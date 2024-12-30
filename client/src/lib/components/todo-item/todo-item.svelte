@@ -11,7 +11,9 @@
 	import { Label } from '@ui/label';
 	import { Textarea } from '@ui/textarea';
 
-	import { CalendarIcon } from 'lucide-svelte';
+	import { todoStore, pauseTimer, resetTimer, startTimer } from '@app/stores';
+
+	import { ArrowRight, CalendarIcon } from 'lucide-svelte';
 
 	import { cn } from '@app/lib/utils';
 
@@ -40,10 +42,30 @@
 		}
 	};
 
+	// Function to handle title update and reset the timer
+	function handleTitleChange() {
+		// Reset the timer when title changes
+		resetTimer();
+	}
+
+	function handleDialogOpen(isOpen: boolean) {
+		console.log($todoStore.timer.getTimeValues().seconds);
+		if (isOpen) {
+			if ($todoStore.timer.isRunning()) {
+				pauseTimer();
+			}
+		} else {
+			if ($todoStore.timer.isPaused()) {
+				startTimer();
+			}
+		}
+	}
+
 	export let todo: TodoItemDTO = defaultTodo;
 	const isExistingTodo = !!todo.id;
 
 	export let onDelete: (todo: TodoItemDTO, isPermanent: boolean) => void;
+	let dialogOpen = false;
 </script>
 
 <Accordion.Root>
@@ -53,19 +75,36 @@
 				aria-label={`Mark as ${todo.isComplete} ? 'incomplete ' : 'complete'`}
 				checked={todo.isComplete}
 				class="mx-2"
-				on:click={() => (todo.isComplete = !todo.isComplete)}
+				on:click={() => {
+					todo.isComplete = !todo.isComplete;
+					resetTimer();
+				}}
 			/>
 			<Input
 				bind:value={todo.title}
 				class="ml-1 h-7 border-none px-2 focus-visible:ring-transparent"
 				placeholder="eg. Take the cat out for a walk"
+				on:input={handleTitleChange}
+				slot="title"
 			/>
+			<div slot="actions">
+				{#if isExistingTodo}
+					<Button href={`/todo/${todo.id}`} size="sm" variant="ghost">
+						<ArrowRight size={16} />
+					</Button>
+				{/if}
+			</div>
 		</Accordion.Trigger>
 		<Accordion.Content>
 			<div class="flex flex-col space-y-4">
 				<div class="grid w-full space-y-1.5">
 					<Label for="description">Description (optional)</Label>
-					<Textarea bind:value={todo.description} class="focus-visible:ring-0" id="description" />
+					<Textarea
+						bind:value={todo.description}
+						class="focus-visible:ring-0"
+						id="description"
+						on:keyup={handleTitleChange}
+					/>
 					<p class="text-muted-foreground text-sm">Extra details on what needs to be done.</p>
 				</div>
 
@@ -87,9 +126,15 @@
 								</Button>
 							</div>
 							{#if isExistingTodo}
-								<AlertDialog.Root>
+								<AlertDialog.Root
+									bind:open={dialogOpen}
+									closeOnOutsideClick
+									onOpenChange={() => handleDialogOpen(dialogOpen)}
+								>
 									<AlertDialog.Trigger>
-										<Button variant="destructive">Delete</Button>
+										<Button variant="destructive" on:click={() => (dialogOpen = true)}
+											>Delete</Button
+										>
 									</AlertDialog.Trigger>
 									<AlertDialog.Content>
 										<AlertDialog.Header>
@@ -127,6 +172,7 @@
 							onSelectedChange={(v) => {
 								if (!v) return;
 								value = today(getLocalTimeZone()).add({ days: v.value });
+								handleTitleChange();
 							}}
 						>
 							<Select.Trigger>
@@ -139,7 +185,7 @@
 							</Select.Content>
 						</Select.Root>
 						<div class="rounded-md border">
-							<Calendar id="dueDate" bind:value />
+							<Calendar id="dueDate" bind:value onValueChange={() => handleTitleChange()} />
 						</div>
 					</Popover.Content>
 				</Popover.Root>
