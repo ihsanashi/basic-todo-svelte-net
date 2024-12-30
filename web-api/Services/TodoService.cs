@@ -49,7 +49,7 @@ public class TodoService
     }
   }
 
-  public async Task<TodoItemDTO?> GetTodoItemByIdAsync(long id, string userId)
+  public async Task<TodoItemResponse> GetTodoItemByIdAsync(long id, string userId)
   {
     try
     {
@@ -57,10 +57,29 @@ public class TodoService
 
       if (todoItem == null)
       {
-        return null;
+        return new TodoItemResponse
+        {
+          Success = false,
+          ErrorMessage = $"Todo item with ID {id} not found."
+        };
       }
 
-      return ItemToDTO(todoItem);
+      var todoItemDto = new TodoItemDTO
+      {
+        Id = todoItem.Id,
+        Title = todoItem.Title,
+        IsComplete = todoItem.IsComplete,
+        Description = todoItem.Description,
+        DueDate = todoItem.DueDate,
+        CreatedAt = todoItem.CreatedAt,
+        UpdatedAt = todoItem.UpdatedAt,
+      };
+
+      return new TodoItemResponse
+      {
+        Success = true,
+        Data = todoItemDto,
+      };
     }
     catch (Exception exception)
     {
@@ -217,6 +236,7 @@ public class TodoService
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
             UserId = userId,
+            IsDeleted = false,
           };
 
           _context.TodoItems.Add(newItem);
@@ -230,6 +250,7 @@ public class TodoService
             DueDate = newItem.DueDate,
             CreatedAt = newItem.CreatedAt,
             UpdatedAt = newItem.UpdatedAt,
+            IsDeleted = false,
           });
         }
       }

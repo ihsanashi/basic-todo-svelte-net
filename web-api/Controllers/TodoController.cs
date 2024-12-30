@@ -65,7 +65,7 @@ public class TodoItemsController : ControllerBase
     // <snippet_GetByID>
     [HttpGet("{id}")]
     [Authorize]
-    public async Task<ActionResult<TodoItemDTO>> GetTodoItem(long id)
+    public async Task<ActionResult<TodoItemResponse>> GetTodoItem(long id)
     {
         try
         {
@@ -73,14 +73,22 @@ public class TodoItemsController : ControllerBase
 
             if (string.IsNullOrEmpty(userId))
             {
-                return Unauthorized(new { message = "User is not authorized." });
+                return Unauthorized(new TodoItemResponse
+                {
+                    Success = false,
+                    ErrorMessage = "User is not authorized."
+                });
             }
 
             var todoItem = await _todoService.GetTodoItemByIdAsync(id, userId);
 
             if (todoItem == null)
             {
-                return NotFound(new { message = $"Todo item with ID {id} not found." });
+                return NotFound(new TodoItemResponse
+                {
+                    Success = false,
+                    ErrorMessage = $"Todo item with ID {id} not found."
+                });
             }
 
             return Ok(todoItem);
