@@ -46,6 +46,40 @@ export async function getAllTodos(): Promise<TodoItemsMultipleResponse> {
 	}
 }
 
+export async function getSingleTodo(id: number): Promise<TodoItemResponse> {
+	try {
+		const response = await fetch(`${API_TODO_URL}/${id}`, {
+			credentials: 'include',
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+
+		if (response.ok) {
+			const json: TodoItemResponse = await response.json();
+			return {
+				success: true,
+				data: json.data,
+			};
+		} else {
+			const json: TodoItemResponse = await response.json();
+			return {
+				success: false,
+				errorMessage: json.errorMessage,
+			};
+		}
+	} catch (error) {
+		console.error(error);
+		const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+
+		return {
+			success: false,
+			errorMessage: errorMessage,
+		};
+	}
+}
+
 export async function bulkSaveTodos(todos: TodoItemDTO[]): Promise<TodoItemsMultipleResponse> {
 	try {
 		const response = await fetch(`${API_TODO_URL}/bulk`, {
