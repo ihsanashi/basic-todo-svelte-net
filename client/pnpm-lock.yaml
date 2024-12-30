@@ -29,6 +29,9 @@ importers:
       drizzle-orm:
         specifier: ^0.33.0
         version: 0.33.0(mysql2@3.11.5)
+      easytimer.js:
+        specifier: ^4.6.0
+        version: 4.6.0
       zod:
         specifier: ^3.24.1
         version: 3.24.1
@@ -1503,6 +1506,9 @@ packages:
 
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
+
+  easytimer.js@4.6.0:
+    resolution: {integrity: sha512-2kl/X/HnB5mKJ29x7N908CrNl5y8yDgDuD8U7TXTEHs/lBFVXT91DSoiXncYnwC1TPPDfomlLDKPaTSqT3dygQ==}
 
   electron-to-chromium@1.5.73:
     resolution: {integrity: sha512-8wGNxG9tAG5KhGd3eeA0o6ixhiNdgr0DcHWm85XPCphwZgD1lIEoi6t3VERayWao7SF7AAZTw6oARGJeVjH8Kg==}
@@ -3677,6 +3683,8 @@ snapshots:
       mysql2: 3.11.5
 
   eastasianwidth@0.2.0: {}
+
+  easytimer.js@4.6.0: {}
 
   electron-to-chromium@1.5.73: {}
 
