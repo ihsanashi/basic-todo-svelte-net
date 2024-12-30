@@ -16,7 +16,7 @@ import type {
 
 import type { GenericPostAuthApiResponse } from '@references/types';
 
-async function login(inputs: LoginRequest): Promise<GenericPostAuthApiResponse> {
+export async function login(inputs: LoginRequest): Promise<GenericPostAuthApiResponse> {
 	try {
 		const response = await fetch(`${API_AUTH_URL}/login?useCookies=true`, {
 			credentials: 'include',
@@ -58,7 +58,7 @@ async function login(inputs: LoginRequest): Promise<GenericPostAuthApiResponse> 
 	}
 }
 
-async function logout(): Promise<GenericPostAuthApiResponse> {
+export async function logout(): Promise<GenericPostAuthApiResponse> {
 	try {
 		const response = await fetch(`${API_AUTH_URL}/logout`, {
 			credentials: 'include',
@@ -102,7 +102,7 @@ async function logout(): Promise<GenericPostAuthApiResponse> {
 	}
 }
 
-async function register(inputs: RegisterRequest): Promise<GenericPostAuthApiResponse> {
+export async function register(inputs: RegisterRequest): Promise<GenericPostAuthApiResponse> {
 	try {
 		const response = await fetch(`${API_AUTH_URL}/register`, {
 			method: 'POST',
@@ -145,7 +145,9 @@ async function register(inputs: RegisterRequest): Promise<GenericPostAuthApiResp
 	}
 }
 
-async function forgotPassword(inputs: ForgotPasswordRequest): Promise<GenericPostAuthApiResponse> {
+export async function forgotPassword(
+	inputs: ForgotPasswordRequest
+): Promise<GenericPostAuthApiResponse> {
 	try {
 		const response = await fetch(`${API_AUTH_URL}/forgotPassword`, {
 			method: 'POST',
@@ -192,7 +194,7 @@ async function forgotPassword(inputs: ForgotPasswordRequest): Promise<GenericPos
 	}
 }
 
-async function checkAuth(): Promise<GenericPostAuthApiResponse> {
+export async function getCurrentUser(): Promise<GenericPostAuthApiResponse> {
 	try {
 		const response = await fetch(`${API_AUTH_URL}/me`, {
 			credentials: 'include',
@@ -243,5 +245,5 @@ export const authActions = {
 	logout,
 	register,
 	forgotPassword,
-	checkAuth,
+	getCurrentUser,
 };
