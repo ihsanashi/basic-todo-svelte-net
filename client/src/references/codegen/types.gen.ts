@@ -227,7 +227,7 @@ export type GetApiTodoItemsByIdData = {
     };
 };
 
-export type GetApiTodoItemsByIdResponse = (TodoItemDTO);
+export type GetApiTodoItemsByIdResponse = (TodoItemResponse);
 
 export type GetApiTodoItemsByIdError = unknown;
 
