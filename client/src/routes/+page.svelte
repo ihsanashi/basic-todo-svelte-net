@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import { authActions, getAllTodos, bulkSaveTodos, softDeleteTodo } from '@api';
+	import { authActions, getAllTodos, bulkSaveTodos, deleteSingleTodo } from '@api';
 	import { authStore } from '@stores/auth';
 
 	import { Button } from '@ui/button';
@@ -66,7 +66,7 @@
 			return;
 		}
 
-		const response = await softDeleteTodo(todo.id, type);
+		const response = await deleteSingleTodo(todo.id, type);
 
 		if (response.success) {
 			toast.success(`${type ? 'Permanently deleted' : 'Archived'} a todo item`);
@@ -79,7 +79,7 @@
 	}
 
 	onMount(async () => {
-		const response = await authActions.checkAuth();
+		const response = await authActions.getCurrentUser();
 
 		if (response.success) {
 			const user = response.data as GetApiAuthMeResponse;

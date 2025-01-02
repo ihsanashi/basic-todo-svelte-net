@@ -12,7 +12,7 @@
 	import type { GetApiAuthMeResponse } from '@references/codegen';
 
 	onMount(async () => {
-		const response = await authActions.checkAuth();
+		const response = await authActions.getCurrentUser();
 
 		if (response.success) {
 			const user = response.data as GetApiAuthMeResponse;
