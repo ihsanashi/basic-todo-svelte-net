@@ -23,8 +23,6 @@
     - [x] Loading state
     - [x] Prevent logged in users from accessing auth page
     - [x] Beautify module import path
-  - [ ] Authentication flow & guard
-    - [ ] Remove old auth stores and state
 - [ ] [**Full-stack**]: Pages
   - [x] Data modelling
   - [x] Simple navbar
